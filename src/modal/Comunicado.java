@@ -11,4 +11,5 @@ public class Comunicado {
     private String descricao;
     private int qtdCurtidas;
     private TipoNoticiaUrgencia tipoUrgencia;
+    ////teste
 }
