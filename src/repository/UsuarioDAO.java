@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDAO implements IGenericDAO<Usuario>{
+public class UsuarioDAO implements IGenericDAO<Usuario> {
 
     static List<Usuario> usuarios = new ArrayList<>();
 
@@ -14,7 +14,7 @@ public class UsuarioDAO implements IGenericDAO<Usuario>{
     public void salvar(Usuario usuario) {
         UsuarioDAO usuarioRepository = new UsuarioDAO();
         try {
-            if(usuario.getId() == null) {
+            if (usuario.getId() == null) {
                 usuarioRepository.update(usuario);
             } else {
                 usuario.setId(usuarioRepository.proximoId().longValue());
@@ -28,23 +28,38 @@ public class UsuarioDAO implements IGenericDAO<Usuario>{
     @Override
     public void remover(Usuario usuario) throws SQLException, ClassNotFoundException {
         UsuarioDAO usuarioRepository = new UsuarioDAO();
-        UsuarioDAO.delete(usuario);
+        usuarioRepository.delete(usuario);
     }
 
     @Override
-    public List<Usuario> buscarTodos() throws SQLException, ClassNotFoundException {
-        return null;
+    public List<Usuario> buscarTodos() {
+        System.out.println(usuarios);
+
+        UsuarioDAO pessoaRepository = new UsuarioDAO();
+        try {
+            usuarios = pessoaRepository.busca();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return usuarios;
     }
 
     @Override
     public List<Usuario> buscarPorNome(String nome) {
-        return null;
+        List<Usuario> pessoasFiltradas = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            if (usuario.getUsuario().contains(nome)) {
+                pessoasFiltradas.add(usuario);
+            }
+        }
+        return pessoasFiltradas;
     }
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/seguradora"; // trocar nome do banco
-        Connection connection = DriverManager.getConnection(url, "root","");
+        Connection connection = DriverManager.getConnection(url, "root", "");
 
         return connection;
     }
@@ -70,7 +85,7 @@ public class UsuarioDAO implements IGenericDAO<Usuario>{
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuarios");
         ResultSet resultSet = stmt.executeQuery();
 
-        while(resultSet.next()){
+        while (resultSet.next()) {
             Usuario usuario = new Usuario();
             usuario.setId(resultSet.getLong(1));
             usuario.setUsuario(resultSet.getString(2));
@@ -82,11 +97,11 @@ public class UsuarioDAO implements IGenericDAO<Usuario>{
         return usuarios;
     }
 
-    public  List<Usuario> buscaPorId(Long id) throws SQLException, ClassNotFoundException {
+    public List<Usuario> buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Usuario> usuarios = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("select * from usuarios WHERE id = ?");
-        stmt.setLong(1,id);
+        stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         while (resultSet.next()) {
 
@@ -114,13 +129,13 @@ public class UsuarioDAO implements IGenericDAO<Usuario>{
         connection.close();
     }
 
-    public  Integer proximoId() throws SQLException , ClassNotFoundException {
+    public Integer proximoId() throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT max(id) from usuarios");
         ResultSet resultSet = stmt.executeQuery();
 
         while (resultSet.next()) {
-            return resultSet.getInt(1) +1;
+            return resultSet.getInt(1) + 1;
         }
         return 1;
     }
