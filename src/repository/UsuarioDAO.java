@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static repository.Conexao.getConnection;
+
 public class UsuarioDAO implements IGenericDAO<Usuario> {
 
     static List<Usuario> usuarios = new ArrayList<>();
@@ -56,12 +58,9 @@ public class UsuarioDAO implements IGenericDAO<Usuario> {
         return pessoasFiltradas;
     }
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/seguradora"; // trocar nome do banco
-        Connection connection = DriverManager.getConnection(url, "root", "");
-
-        return connection;
+    public static Usuario buscarPorID(Long id) {
+        Usuario usuario= new Usuario();
+        return usuario;
     }
 
     public void insere(Usuario usuario) throws ClassNotFoundException, SQLException {
