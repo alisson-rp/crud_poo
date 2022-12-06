@@ -2,8 +2,8 @@ package modal;
 
 import java.time.LocalDate;
 
-public class Comunicado {
-    private int cdComunicado;
+public class Comunicado extends Entity {
+
     private LocalDate dataCadastro;
     private Setor setor;
     private Usuario responsavel;
@@ -13,13 +13,6 @@ public class Comunicado {
     private TipoNoticiaUrgencia tipoUrgencia;
     private TipoComunicado tipoComunicado;
 
-    public int getCdComunicado() {
-        return cdComunicado;
-    }
-
-    public void setCdComunicado(int cdComunicado) {
-        this.cdComunicado = cdComunicado;
-    }
 
     public LocalDate getDataCadastro() {
         return dataCadastro;
