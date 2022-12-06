@@ -56,7 +56,7 @@ public class SetorDAO implements IGenericDAO<Setor>{
         return setoresFiltradas;
     }
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/seguradora"; // trocar nome do banco
         Connection connection = DriverManager.getConnection(url, "root","");
@@ -93,7 +93,7 @@ public class SetorDAO implements IGenericDAO<Setor>{
         return setores;
     }
 
-    public List<Setor> buscaPorId(Long id) throws SQLException, ClassNotFoundException {
+    public static Setor buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Setor> setores = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("select * from setores WHERE id = ?");
@@ -106,7 +106,7 @@ public class SetorDAO implements IGenericDAO<Setor>{
             setores.add(setor);
         }
         connection.close();
-        return setores;
+        return setores.get(0);
     }
 
     public void update(Setor setor) throws SQLException, ClassNotFoundException {
