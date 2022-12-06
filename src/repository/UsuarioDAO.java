@@ -97,14 +97,13 @@ public class UsuarioDAO implements IGenericDAO<Usuario> {
         return usuarios;
     }
 
-    public List<Usuario> buscaPorId(Long id) throws SQLException, ClassNotFoundException {
+    public Usuario buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Usuario> usuarios = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("select * from usuarios WHERE id = ?");
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         while (resultSet.next()) {
-
             Usuario usuario = new Usuario();
             usuario.setId(resultSet.getLong(1));
             usuario.setUsuario(resultSet.getString(2));
@@ -113,7 +112,7 @@ public class UsuarioDAO implements IGenericDAO<Usuario> {
             usuario.setSetor(SetorDAO.buscaPorId(idSetor));
         }
         connection.close();
-        return usuarios;
+        return usuarios.get(0);
     }
 
     public void update(Usuario usuario) throws SQLException, ClassNotFoundException {
