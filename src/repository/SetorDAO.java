@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static repository.Conexao.getConnection;
+
 public class SetorDAO implements IGenericDAO<Setor>{
 
     static List<Setor> setores = new ArrayList<>();
@@ -56,13 +58,6 @@ public class SetorDAO implements IGenericDAO<Setor>{
         return setoresFiltradas;
     }
 
-    public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/seguradora"; // trocar nome do banco
-        Connection connection = DriverManager.getConnection(url, "root","");
-
-        return connection;
-    }
 
     public void insere(Setor setor) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
