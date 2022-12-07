@@ -81,7 +81,6 @@ public class Comunicado extends Entity {
     @Override
     public String toString() {
         return "Comunicado{" +
-                "cdComunicado=" + cdComunicado +
                 ", dataCadastro=" + dataCadastro +
                 ", setor=" + setor +
                 ", responsavel=" + responsavel +
