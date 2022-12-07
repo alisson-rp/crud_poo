@@ -1,5 +1,6 @@
 package repository;
 
+import modal.Setor;
 import modal.Usuario;
 
 import java.sql.*;
@@ -58,11 +59,6 @@ public class UsuarioDAO implements IGenericDAO<Usuario> {
         return pessoasFiltradas;
     }
 
-    public static Usuario buscarPorID(Long id) {
-        Usuario usuario= new Usuario();
-        return usuario;
-    }
-
     public void insere(Usuario usuario) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
@@ -96,7 +92,7 @@ public class UsuarioDAO implements IGenericDAO<Usuario> {
         return usuarios;
     }
 
-    public Usuario buscaPorId(Long id) throws SQLException, ClassNotFoundException {
+    public static Usuario buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Usuario> usuarios = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("select * from usuarios WHERE id = ?");

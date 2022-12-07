@@ -58,7 +58,6 @@ public class SetorDAO implements IGenericDAO<Setor>{
         return setoresFiltradas;
     }
 
-
     public void insere(Setor setor) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
