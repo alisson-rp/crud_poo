@@ -88,7 +88,7 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
             Comentario commnet = new Comentario();
             commnet.setId(resultSet.getLong(1));
             commnet.setComentario(resultSet.getString(2));
-            Usuario usuario = UsuarioDAO.buscarPorID(resultSet.getLong(3));
+            Usuario usuario = UsuarioDAO.buscaPorId(resultSet.getLong(3));
             commnet.setUsuario(usuario);
             //commnet.setDataComentario(resultSet.getDate(3));
             comments.add(commnet);
