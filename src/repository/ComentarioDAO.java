@@ -1,16 +1,15 @@
 package repository;
 
 import modal.Comentario;
+import modal.Comunicado;
 import modal.Setor;
 import modal.Usuario;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static repository.Conexao.getConnection;
 
 public class ComentarioDAO implements IGenericDAO<Comentario>{
@@ -52,28 +51,25 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
 
     @Override
     public List<Comentario> buscarPorNome(String nome) {
-        return null;
+        List<Comentario> comentariosFiltradas = new ArrayList<>();
+        for (Comentario comment : comentarios) {
+            if (comment.getComentario().contains(nome)) {
+                comentariosFiltradas.add(comment);
+            }
+        }
+        return comentariosFiltradas;
     }
 
-    public void update(Comentario comentario) throws SQLException, ClassNotFoundException {
+    public void insere(Comentario comentario) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET comentario = ?, dt_comentario ? WHERE id = ?");
-        stmt.setString(1, comentario.getComentario());
-        //stmt.setDate(2, comentario.getDataComentario());
-        stmt.setInt(3,comentario.getId().intValue());
 
-
-
+        PreparedStatement stmt = connection.prepareStatement("insert into comentarios value(?,?,?,?,?)");
+        stmt.setInt(1,comentario.getId().intValue());
+        stmt.setInt(2,comentario.getComunicado().getId().intValue());
+        stmt.setString(3,comentario.getComentario());
+        stmt.setInt(3,comentario.getUsuario().getId().intValue());
         int i = stmt.executeUpdate();
-        System.out.println(i + "linhas atualizadas");
-        connection.close();
-    }
-
-    public void delete(Comentario comment) throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE from comentarios WHERE id = ?");
-        stmt.setInt(1, comment.getId().intValue());
-        stmt.executeUpdate();
+        System.out.println(i + " linhas inseridas");
         connection.close();
     }
 
@@ -96,6 +92,48 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
         connection.close();
         return comments;
     }
+
+    public static Comentario buscaPorId(Long id) throws SQLException, ClassNotFoundException {
+        List<Comentario> comments = new ArrayList<>();
+        Connection connection = getConnection();
+        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE id = ?");
+        stmt.setLong(1,id);
+        ResultSet resultSet = stmt.executeQuery();
+
+        while (resultSet.next()) {
+            Comentario comentario = new Comentario();
+            comentario.setId(resultSet.getLong(1));
+            comentario.setComunicado(ComunicadoDAO.buscaPorId(resultSet.getLong(1)));
+            comentario.setComentario(resultSet.getString(3));
+            comentario.setUsuario(UsuarioDAO.buscaPorId(resultSet.getLong(4)));
+            //comentario.setDataComentario(resultSet.getString(2));
+            comments.add(comentario);
+        }
+        connection.close();
+        return comments.get(0);
+    }
+
+    public void update(Comentario comentario) throws SQLException, ClassNotFoundException {
+        Connection connection = getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET comentarios = ?, dt_comentario ? WHERE id = ?");
+        stmt.setString(1, comentario.getComentario());
+        //stmt.setDate(5, comentario.getDataComentario());
+        stmt.setInt(3,comentario.getId().intValue());
+
+        int i = stmt.executeUpdate();
+        System.out.println(i + "linhas atualizadas");
+        connection.close();
+    }
+
+    public void delete(Comentario comment) throws SQLException, ClassNotFoundException {
+        Connection connection = getConnection();
+        PreparedStatement stmt = connection.prepareStatement("DELETE from comentarios WHERE id = ?");
+        stmt.setInt(1, comment.getId().intValue());
+        stmt.executeUpdate();
+        connection.close();
+    }
+
+
 
     public  Integer proximoId() throws SQLException , ClassNotFoundException {
         Connection connection = getConnection();

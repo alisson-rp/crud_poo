@@ -1,6 +1,8 @@
 package repository;
 
 import modal.Comunicado;
+import modal.TipoComunicado;
+import modal.TipoNoticiaUrgencia;
 import modal.Usuario;
 
 import java.sql.*;
@@ -80,8 +82,8 @@ public class ComunicadoDAO implements IGenericDAO<Comunicado>{
         stmt.setString(6, comunicado.getDescricao());
         stmt.setInt(7, comunicado.getQtdCurtidas());
         /// comentar com o bruno como trazer o numero do enum ...
-        stmt.setString(8, comunicado.getTipoUrgencia().toString());
-        stmt.setString(9, comunicado.getTipoComunicado().toString());
+        stmt.setInt(8, comunicado.getTipoUrgencia().ordinal());
+        stmt.setInt(9, comunicado.getTipoComunicado().ordinal());
 
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
@@ -107,14 +109,14 @@ public class ComunicadoDAO implements IGenericDAO<Comunicado>{
             comunicado.setDescricao(resultSet.getString(6));
             comunicado.setQtdCurtidas(resultSet.getInt(7));
             //resolver questão do enum ...
-            comunicado.setTipoUrgencia(resultSet.getInt(8));
-            comunicado.setTipoComunicado(resultSet.getInt(9));
+            comunicado.setTipoUrgencia(TipoNoticiaUrgencia.getTipoById(resultSet.getInt(8)));
+            comunicado.setTipoComunicado(TipoComunicado.getTipoById(resultSet.getInt(9)));
         }
         connection.close();
         return comunicados;
     }
 
-    public Comunicado buscaPorId(Long id) throws SQLException, ClassNotFoundException {
+    public static Comunicado buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Comunicado> comunicados = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("select * from comunicados WHERE id = ?");
