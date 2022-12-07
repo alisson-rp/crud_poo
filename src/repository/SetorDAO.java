@@ -2,13 +2,16 @@ package repository;
 
 import modal.Setor;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static repository.Conexao.getConnection;
 
-public class SetorDAO implements IGenericDAO<Setor>{
+public class SetorDAO implements IGenericDAO<Setor> {
 
     static List<Setor> setores = new ArrayList<>();
 
@@ -16,7 +19,7 @@ public class SetorDAO implements IGenericDAO<Setor>{
     public void salvar(Setor setor) {
         SetorDAO setorRepository = new SetorDAO();
         try {
-            if(setor.getId() != null) {
+            if (setor.getId() != null) {
                 setorRepository.update(setor);
             } else {
                 setor.setId(setorRepository.proximoId().longValue());
@@ -62,15 +65,15 @@ public class SetorDAO implements IGenericDAO<Setor>{
         Connection connection = getConnection();
 
         PreparedStatement stmt = connection.prepareStatement("insert into setores value(?,?)");
-        stmt.setInt(1,setor.getId().intValue());
-        stmt.setString(2,setor.getNome());
+        stmt.setInt(1, setor.getId().intValue());
+        stmt.setString(2, setor.getNome());
 
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
         connection.close();
     }
 
-    public List<Setor> busca()  throws SQLException, ClassNotFoundException {
+    public List<Setor> busca() throws SQLException, ClassNotFoundException {
         List<Setor> setores = new ArrayList<>();
         Connection connection = getConnection();
 
@@ -91,7 +94,7 @@ public class SetorDAO implements IGenericDAO<Setor>{
         List<Setor> setores = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("select * from setores WHERE id = ?");
-        stmt.setLong(1,id);
+        stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         while (resultSet.next()) {
             Setor setor = new Setor();
@@ -107,8 +110,7 @@ public class SetorDAO implements IGenericDAO<Setor>{
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET nome = ? WHERE id = ?");
         stmt.setString(1, setor.getNome());
-        stmt.setInt(2,setor.getId().intValue());
-
+        stmt.setInt(2, setor.getId().intValue());
 
 
         int i = stmt.executeUpdate();
@@ -116,13 +118,13 @@ public class SetorDAO implements IGenericDAO<Setor>{
         connection.close();
     }
 
-    public  Integer proximoId() throws SQLException , ClassNotFoundException {
+    public Integer proximoId() throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT max(id) from setores");
         ResultSet resultSet = stmt.executeQuery();
 
         while (resultSet.next()) {
-            return resultSet.getInt(1) +1;
+            return resultSet.getInt(1) + 1;
         }
         return 1;
     }

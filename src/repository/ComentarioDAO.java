@@ -1,18 +1,18 @@
 package repository;
 
 import modal.Comentario;
-import modal.Comunicado;
-import modal.Setor;
 import modal.Usuario;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import static repository.Conexao.getConnection;
 
-public class ComentarioDAO implements IGenericDAO<Comentario>{
+public class ComentarioDAO implements IGenericDAO<Comentario> {
 
     static List<Comentario> comentarios = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
     public void salvar(Comentario comentario) {
         ComentarioDAO comentRepository = new ComentarioDAO();
         try {
-            if(comentario.getId() != null) {
+            if (comentario.getId() != null) {
                 comentRepository.update(comentario);
             } else {
                 comentario.setId(comentRepository.proximoId().longValue());
@@ -64,10 +64,10 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
         Connection connection = getConnection();
 
         PreparedStatement stmt = connection.prepareStatement("insert into comentarios value(?,?,?,?,?)");
-        stmt.setInt(1,comentario.getId().intValue());
-        stmt.setInt(2,comentario.getComunicado().getId().intValue());
-        stmt.setString(3,comentario.getComentario());
-        stmt.setInt(3,comentario.getUsuario().getId().intValue());
+        stmt.setInt(1, comentario.getId().intValue());
+        stmt.setInt(2, comentario.getComunicado().getId().intValue());
+        stmt.setString(3, comentario.getComentario());
+        stmt.setInt(3, comentario.getUsuario().getId().intValue());
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
         connection.close();
@@ -97,7 +97,7 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
         List<Comentario> comments = new ArrayList<>();
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE id = ?");
-        stmt.setLong(1,id);
+        stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
 
         while (resultSet.next()) {
@@ -118,7 +118,7 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
         PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET comentarios = ?, dt_comentario ? WHERE id = ?");
         stmt.setString(1, comentario.getComentario());
         //stmt.setDate(5, comentario.getDataComentario());
-        stmt.setInt(3,comentario.getId().intValue());
+        stmt.setInt(3, comentario.getId().intValue());
 
         int i = stmt.executeUpdate();
         System.out.println(i + "linhas atualizadas");
@@ -134,14 +134,13 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
     }
 
 
-
-    public  Integer proximoId() throws SQLException , ClassNotFoundException {
+    public Integer proximoId() throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT max(item) from comentarios");
         ResultSet resultSet = stmt.executeQuery();
 
         while (resultSet.next()) {
-            return resultSet.getInt(1) +1;
+            return resultSet.getInt(1) + 1;
         }
         return 1;
     }
