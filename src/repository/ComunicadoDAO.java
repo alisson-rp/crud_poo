@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComunicadoDAO implements IGenericDAO<Comunicado> {
+public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
 
     static List<Comunicado> comunicados = new ArrayList<>();
 
@@ -57,15 +57,6 @@ public class ComunicadoDAO implements IGenericDAO<Comunicado> {
             }
         }
         return comunicadoFiltradas;
-    }
-
-    /// ver como faz a interface para a conexão..
-    public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/seguradora"; // trocar nome do banco
-        Connection connection = DriverManager.getConnection(url, "root", "");
-
-        return connection;
     }
 
     public void insere(Comunicado comunicado) throws ClassNotFoundException, SQLException {

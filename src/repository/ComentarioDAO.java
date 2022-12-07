@@ -10,9 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static repository.Conexao.getConnection;
-
-public class ComentarioDAO implements IGenericDAO<Comentario> {
+public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
 
     static List<Comentario> comentarios = new ArrayList<>();
 
