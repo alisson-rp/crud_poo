@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static repository.Conexao.getConnection;
-
-public class SetorDAO implements IGenericDAO<Setor> {
+public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
 
     static List<Setor> setores = new ArrayList<>();
 

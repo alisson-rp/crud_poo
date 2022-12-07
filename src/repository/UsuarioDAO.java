@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static repository.Conexao.getConnection;
 
-public class UsuarioDAO implements IGenericDAO<Usuario> {
+public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
 
     static List<Usuario> usuarios = new ArrayList<>();
 
