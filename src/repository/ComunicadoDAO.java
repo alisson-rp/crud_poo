@@ -3,15 +3,12 @@ package repository;
 import modal.Comunicado;
 import modal.TipoComunicado;
 import modal.TipoNoticiaUrgencia;
-import modal.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static repository.Conexao.getConnection;
-
-public class ComunicadoDAO implements IGenericDAO<Comunicado>{
+public class ComunicadoDAO implements IGenericDAO<Comunicado> {
 
     static List<Comunicado> comunicados = new ArrayList<>();
 
@@ -61,8 +58,9 @@ public class ComunicadoDAO implements IGenericDAO<Comunicado>{
         }
         return comunicadoFiltradas;
     }
+
     /// ver como faz a interface para a conexão..
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/seguradora"; // trocar nome do banco
         Connection connection = DriverManager.getConnection(url, "root", "");
@@ -81,7 +79,6 @@ public class ComunicadoDAO implements IGenericDAO<Comunicado>{
         stmt.setString(5, comunicado.getTitulo());
         stmt.setString(6, comunicado.getDescricao());
         stmt.setInt(7, comunicado.getQtdCurtidas());
-        /// comentar com o bruno como trazer o numero do enum ...
         stmt.setInt(8, comunicado.getTipoUrgencia().ordinal());
         stmt.setInt(9, comunicado.getTipoComunicado().ordinal());
 
@@ -108,7 +105,6 @@ public class ComunicadoDAO implements IGenericDAO<Comunicado>{
             comunicado.setTitulo(resultSet.getString(5));
             comunicado.setDescricao(resultSet.getString(6));
             comunicado.setQtdCurtidas(resultSet.getInt(7));
-            //resolver questão do enum ...
             comunicado.setTipoUrgencia(TipoNoticiaUrgencia.getTipoById(resultSet.getInt(8)));
             comunicado.setTipoComunicado(TipoComunicado.getTipoById(resultSet.getInt(9)));
         }
@@ -138,9 +134,8 @@ public class ComunicadoDAO implements IGenericDAO<Comunicado>{
                         "descricao = ?, curtidas = ?  WHERE id = ?");
         stmt.setString(1, comunicado.getDataCadastro().toString());
         stmt.setInt(2, comunicado.getSetor().getId().intValue());
-        /// comentar com o bruno como trazer o numero do enum ...
-        stmt.setString(3, comunicado.getTipoUrgencia().toString());
-        stmt.setString(4, comunicado.getTipoComunicado().toString());
+        stmt.setInt(3, comunicado.getTipoUrgencia().ordinal());
+        stmt.setInt(4, comunicado.getTipoComunicado().ordinal());
         stmt.setInt(5, comunicado.getResponsavel().getId().intValue());
         stmt.setString(6, comunicado.getTitulo());
         stmt.setString(7, comunicado.getDescricao());
