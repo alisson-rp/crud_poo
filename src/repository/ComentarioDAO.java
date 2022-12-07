@@ -103,10 +103,10 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
         while (resultSet.next()) {
             Comentario comentario = new Comentario();
             comentario.setId(resultSet.getLong(1));
-            comentario.setComunicado();
-            comentario.setComentario(resultSet.getString(3);
-            comentario.setUsuario();
-            comentario.setDataComentario(resultSet.getString(2));
+            comentario.setComunicado(ComunicadoDAO.buscaPorId(resultSet.getLong(1)));
+            comentario.setComentario(resultSet.getString(3));
+            comentario.setUsuario(UsuarioDAO.buscaPorId(resultSet.getLong(4)));
+            //comentario.setDataComentario(resultSet.getString(2));
             comments.add(comentario);
         }
         connection.close();
@@ -117,7 +117,7 @@ public class ComentarioDAO implements IGenericDAO<Comentario>{
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET comentarios = ?, dt_comentario ? WHERE id = ?");
         stmt.setString(1, comentario.getComentario());
-        stmt.setDate(5, comentario.getDataComentario());
+        //stmt.setDate(5, comentario.getDataComentario());
         stmt.setInt(3,comentario.getId().intValue());
 
         int i = stmt.executeUpdate();

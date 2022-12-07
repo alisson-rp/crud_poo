@@ -26,9 +26,10 @@ public class AppMainCadastro {
 
         novoComunicado.setTitulo(JOptionPane.showInputDialog(null,"Titulo: ", "Cadastro de Setor", JOptionPane.QUESTION_MESSAGE));
         novoComunicado.setDescricao(JOptionPane.showInputDialog(null,"Descrição: ", "Cadastro de Comunicado", JOptionPane.QUESTION_MESSAGE));
-        novoComunicado.setTipoUrgencia();//Fazer selects
-        novoComunicado.setTipoComunicado();//Fazer selects
+        //novoComunicado.setTipoUrgencia();//Fazer selects
+        //novoComunicado.setTipoComunicado();//Fazer selects
         return novoComunicado;
     }
 
+    //fAzer funções de buscar em select
 }
