@@ -39,6 +39,40 @@ public class AppMainCadastro {
         return novoComunicado;
     }
 
+    public static void vizualizarComentarios(Comunicado comunicado) throws SQLException, ClassNotFoundException {
+        List<Comentario> comments = ComentarioDAO.buscaPorId(comunicado.getId());
+        String texto = "";
+        for (Comentario comment : comments) {
+            texto += "\n #####################################################";
+            texto += "\n \n" + comment.getUsuario().getUsuario();
+            texto += "\n" + comment.getId() + ": " + comment.getComentario() + "\n";
+        }
+
+        String[] opcoes;
+        opcoes = new String[]{"Operações", "Voltar"};
+
+
+        int resposta = JOptionPane.showOptionDialog(
+                null
+                , texto
+                , ""
+                , JOptionPane.YES_NO_OPTION
+                , JOptionPane.PLAIN_MESSAGE
+                , null
+                , opcoes
+                , "Botao 3"
+        );
+
+        switch (resposta) {
+            case 0:
+                AppMain.chamaCastroComentario(comunicado);
+                break;
+            case 2:
+                AppMain.ChamarMenuPrincipal();
+                break;
+        }
+    }
+
     public static void vizulizarComunicado(Comunicado comunicado) throws SQLException, ClassNotFoundException {
         String texto = "";
         texto = "############################ " + comunicado.getTitulo() + " ############################" +
@@ -75,10 +109,12 @@ public class AppMainCadastro {
                 break;
             case 1:
                 ComunicadoDAO.curtiComentario(comunicado.getId());
+                comunicado.setQtdCurtidas(comunicado.getQtdCurtidas()+1);
                 vizulizarComunicado(comunicado);
                 break;
             case 2:
-                chamaRelatorioComentario(comunicado.getId());
+                vizualizarComentarios(comunicado);
+                //chamaRelatorioComentario(comunicado.getId());
                 break;
             case 3:
                 AppMain.ChamarMenuPrincipal();
