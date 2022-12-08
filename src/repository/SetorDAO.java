@@ -104,7 +104,7 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
 
     public void update(Setor setor) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET nome = ? WHERE cd_setor = ?");
+        PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET nm_setor = ? WHERE cd_setor = ?");
         stmt.setString(1, setor.getNome());
         stmt.setInt(2, setor.getId().intValue());
 

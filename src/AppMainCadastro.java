@@ -88,8 +88,6 @@ public class AppMainCadastro {
         String[] opcoes;
         opcoes = new String[]{"Comentar", "Curtir", "Ver comentarios", "Voltar"};
 
-        //JOptionPane.showOptionDialog(null, texto,"",JOptionPane.INFORMATION_MESSAGE);
-
         int resposta = JOptionPane.showOptionDialog(
                 null
                 , texto

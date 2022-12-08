@@ -401,6 +401,7 @@ public class AppMain {
         if (set.length() > 0) {
             Setor setor = new Setor();
             setor.setNome(set);
+            setor.setId(setorEdit.getId());
             return setor;
         }
         return null;
