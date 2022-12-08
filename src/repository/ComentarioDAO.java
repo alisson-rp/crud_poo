@@ -21,12 +21,11 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
             if (comentario.getId() != null) {
                 comentRepository.update(comentario);
             } else {
-                comentario.setId(comentRepository.proximoId().longValue());
+                comentRepository.insere(comentario);
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        comentarios.add(comentario);
     }
 
     @Override
@@ -38,9 +37,9 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
     @Override
     public List<Comentario> buscarTodos() throws SQLException, ClassNotFoundException {
 
-        ComentarioDAO commentRepository = new ComentarioDAO();
+        ComentarioDAO comentRepository = new ComentarioDAO();
         try {
-            comentarios = commentRepository.busca();
+            comentarios = comentRepository.busca();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -50,9 +49,9 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
     @Override
     public List<Comentario> buscarPorNome(String nome) {
         List<Comentario> comentariosFiltradas = new ArrayList<>();
-        for (Comentario comment : comentarios) {
-            if (comment.getComentario().contains(nome)) {
-                comentariosFiltradas.add(comment);
+        for (Comentario coment : comentarios) {
+            if (coment.getComentario().contains(nome)) {
+                comentariosFiltradas.add(coment);
             }
         }
         return comentariosFiltradas;
@@ -131,15 +130,4 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
         connection.close();
     }
 
-
-    public Integer proximoId() throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT max(item) from comentarios");
-        ResultSet resultSet = stmt.executeQuery();
-
-        while (resultSet.next()) {
-            return resultSet.getInt(1) + 1;
-        }
-        return 1;
-    }
 }
