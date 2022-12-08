@@ -14,7 +14,6 @@ public class AppMain {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ChamarMenuPrincipal();
     }
-
     public static UsuarioDAO getUsuarioDAO() {
         UsuarioDAO usuarioDAODAO = new UsuarioDAO();
         return usuarioDAODAO;
@@ -68,7 +67,7 @@ public class AppMain {
 
     public static void chamaMenuUsuario() throws SQLException, ClassNotFoundException {
         String[] opcoes;
-        opcoes = new String[]{"Operações", "Vizualizar", "Voltar"};
+        opcoes = new String[]{"Operações", "Vizualizar",  "Voltar"};
 
         int resposta = JOptionPane.showOptionDialog(
                 null
@@ -98,7 +97,7 @@ public class AppMain {
 
     public static void chamaMenuSetores() throws SQLException, ClassNotFoundException {
         String[] opcoes;
-        opcoes = new String[]{"Operações", "Vizualizar", "Voltar"};
+        opcoes = new String[]{"Operações", "Vizualizar",  "Voltar"};
 
         int resposta = JOptionPane.showOptionDialog(
                 null
@@ -161,7 +160,7 @@ public class AppMain {
     }
 
     private static Integer chamaOpcaoCrud() {
-        String[] opcao = {"Inserção", "Alteração", "Exclusão", "Voltar"};
+        String[] opcao = {"Inserção", "Alteração", "Exclusão","Voltar"};
         int tipoOpcao = JOptionPane.showOptionDialog(null, "Escolha uma opção:",
                 "Operação no cadastro: ",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcao, opcao[0]);
@@ -175,9 +174,9 @@ public class AppMain {
             case 0: //Inserção
                 usuario = cadastroUsuario();
                 if (usuario != null) {
-                    JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Usuario cadastrado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "A campos vazios !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"A campos vazios !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
                     chamaOpcaoCrud();
                 }
                 break;
@@ -186,13 +185,13 @@ public class AppMain {
                     usuario = selecaoDeUsuario();
                     usuario = editaUsuario(usuario);
                     if (usuario != null) {
-                        JOptionPane.showMessageDialog(null, "Usuario alterado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Usuario alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
                         chamaCadastroUsuario();
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não temos usuarios cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Não temos usuarios cadastrados","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroUsuario();
                 }
                 break;
@@ -201,9 +200,9 @@ public class AppMain {
                     usuario = selecaoDeUsuario();
                     getUsuarioDAO().remover(usuario);
                     usuario = null;
-                    JOptionPane.showMessageDialog(null, "Usuario excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Usuario excluido com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não Há nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Não Há nada para excluir","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroUsuario();
                 }
                 break;
@@ -214,24 +213,80 @@ public class AppMain {
         return usuario;
     }
 
-    private static Usuario cadastroUsuario() throws SQLException, ClassNotFoundException {
-        try {
-            String usu = JOptionPane.showInputDialog(null, "Digite o nome do usuario: ");
-            String email = JOptionPane.showInputDialog(null, "Digite o endereço de email: ");
-            String setor = (String) chamaSelecaoSetor();
+    public static Comentario chamaCastroComentario(Comunicado comunicado) throws SQLException, ClassNotFoundException {
+        Integer opcaoCrud = chamaOpcaoCrud();
+        Comentario comentario = null;
 
-            if (usu.length() > 0 && email.length() > 0) {
-                Usuario usuario = new Usuario();
-                usuario.setUsuario(usu);
-                usuario.setEmail(email);
-                usuario.setSetor(getSetorDAO().findSetorByNome(setor));
-                return usuario;
-            }
-            return null;
-        } catch (Exception e) {
-            return chamaCadastroUsuario();
+        switch (opcaoCrud) {
+            case 0: //Inserção
+                comentario = cadastroComentario(comunicado);
+                if (comentario != null) {
+                    JOptionPane.showMessageDialog(null,"Comentario feito com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,"A campos vazios !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
+                    chamaOpcaoCrud();
+                }
+                break;
+            case 1: //Alteração
+                try {
+////                    usuario = selecaoDeUsuario();
+////                    usuario = editaUsuario(usuario);
+//                    if (comentario != null) {
+//                        JOptionPane.showMessageDialog(null,"Usuario alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+//                    } else {
+//                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
+//                        chamaCadastroUsuario();
+//                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Não temos usuarios cadastrados","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    chamaCadastroUsuario();
+                }
+                break;
+            case 2: //Exclusão
+                try {
+//                    comentario = selecaoDeUsuario();
+//                    getUsuarioDAO().remover(usuario);
+//                    comentario = null;
+                    JOptionPane.showMessageDialog(null,"Usuario excluido com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Não Há nada para excluir","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    //chamaCadastroUsuario();
+                }
+                break;
+            default:
+                ChamarMenuPrincipal();
+                break;
         }
+        return comentario;
+    }
 
+    private static Comentario cadastroComentario(Comunicado comunicado) {
+        String comentarioString = JOptionPane.showInputDialog(null, "Digite o comentario: ");
+
+        if(comentarioString.length() > 0){
+            Comentario comentario1 = new Comentario();
+            comentario1.setComunicado(comunicado);
+            comentario1.setUsuario(selecaoDeUsuario());
+            comentario1.setComentario(comentarioString);
+            comentario1.setDataComentario(LocalDate.now());
+            return comentario1;
+        }
+        return null;
+    }
+
+    private static Usuario cadastroUsuario() {
+        String usu = JOptionPane.showInputDialog(null, "Digite o nome do usuario: ");
+        String email = JOptionPane.showInputDialog(null, "Digite o endereço de email: ");
+        String setor = (String) chamaSelecaoSetor();
+
+        if (usu.length() > 0 && email.length() > 0) {
+            Usuario usuario = new Usuario();
+            usuario.setUsuario(usu);
+            usuario.setEmail(email);
+            usuario.setSetor(getSetorDAO().findSetorByNome(setor));
+            return usuario;
+        }
+        return null;
     }
 
     private static Object chamaSelecaoUsuario() {
@@ -241,7 +296,6 @@ public class AppMain {
                 "Seleção de usuario", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         return selection;
     }
-
     private static Usuario selecaoDeUsuario() {
         Object[] selectionValues = getUsuarioDAO().findUsuariosInArray();
         String initialSelection = (String) selectionValues[0];
@@ -252,8 +306,8 @@ public class AppMain {
     }
 
     private static Usuario editaUsuario(Usuario usuarioEdit) {
-        String usu = JOptionPane.showInputDialog(null, "Digite o nome do usuario: ", usuarioEdit.getUsuario());
-        String email = JOptionPane.showInputDialog(null, "Digite o endereço de email: ", usuarioEdit.getEmail());
+        String usu = JOptionPane.showInputDialog(null, "Digite o nome do usuario: ",usuarioEdit.getUsuario());
+        String email = JOptionPane.showInputDialog(null, "Digite o endereço de email: ",usuarioEdit.getEmail());
         String setor = (String) chamaSelecaoSetor();
 
         if (usu.length() > 0 && email.length() > 0) {
@@ -274,9 +328,9 @@ public class AppMain {
             case 0: //Inserção
                 setor = cadastroSetor();
                 if (setor != null) {
-                    JOptionPane.showMessageDialog(null, "Setor cadastrado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Setor cadastrado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
                     chamaOpcaoCrud();
                 }
                 break;
@@ -285,24 +339,24 @@ public class AppMain {
                     setor = selecaoDeSetor();
                     setor = editaSetor(setor);
                     if (setor != null) {
-                        JOptionPane.showMessageDialog(null, "Setor alterado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Setor alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
                         chamaCadastroSetor();
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não temos setores cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Não temos setores cadastrados","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroSetor();
                 }
                 break;
-            case 2: //Exclusão
+           case 2: //Exclusão
                 try {
                     setor = selecaoDeSetor();
                     getSetorDAO().remover(setor);
                     setor = null;
-                    JOptionPane.showMessageDialog(null, "Setor excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Setor excluido com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não Há nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Não Há nada para excluir","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroSetor();
                 }
                 break;
@@ -313,19 +367,15 @@ public class AppMain {
         return setor;
     }
 
-    private static Setor cadastroSetor() throws SQLException, ClassNotFoundException {
-        try {
-            String nome = JOptionPane.showInputDialog(null, "Digite o nome do setor: ");
+    private static Setor cadastroSetor() {
+        String nome = JOptionPane.showInputDialog(null, "Digite o nome do setor: ");
 
-            if (nome.length() > 0) {
-                Setor setor = new Setor();
-                setor.setNome(nome);
-                return setor;
-            }
-            return null;
-        } catch (Exception e) {
-            return chamaCadastroSetor();
+        if (nome.length() > 0) {
+            Setor setor = new Setor();
+            setor.setNome(nome);
+            return setor;
         }
+        return null;
     }
 
     private static Object chamaSelecaoSetor() {
@@ -346,7 +396,7 @@ public class AppMain {
     }
 
     private static Setor editaSetor(Setor setorEdit) {
-        String set = JOptionPane.showInputDialog(null, "Digite o nome do usuario: ", setorEdit.getNome());
+        String set = JOptionPane.showInputDialog(null, "Digite o nome do usuario: ",setorEdit.getNome());
 
         if (set.length() > 0) {
             Setor setor = new Setor();
@@ -356,16 +406,16 @@ public class AppMain {
         return null;
     }
 
-    private static Comunicado chamaCadastroComunicado() throws SQLException, ClassNotFoundException {
+        private static Comunicado chamaCadastroComunicado() throws SQLException, ClassNotFoundException {
         Integer opcaoCrud = chamaOpcaoCrud();
         Comunicado comunicado = null;
         switch (opcaoCrud) {
             case 0: //Inserção
                 comunicado = cadastroComunicado();
                 if (comunicado != null) {
-                    JOptionPane.showMessageDialog(null, "Comunicado cadastrado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Comunicado cadastrado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
                     chamaOpcaoCrud();
                 }
                 break;
@@ -374,13 +424,13 @@ public class AppMain {
                     comunicado = selecaoDeComunicado();
                     comunicado = editaComunicado(comunicado);
                     if (comunicado != null) {
-                        JOptionPane.showMessageDialog(null, "comunicado alterado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"comunicado alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
                         chamaCadastroComunicado();
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não temos comunicado cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Não temos comunicado cadastrados","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroComunicado();
                 }
                 break;
@@ -389,9 +439,9 @@ public class AppMain {
                     comunicado = selecaoDeComunicado();
                     getComunicadoDAO().remover(comunicado);
                     comunicado = null;
-                    JOptionPane.showMessageDialog(null, "Comunicado excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Comunicado excluido com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não Há nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Não Há nada para excluir","Aviso", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroComunicado();
                 }
                 break;
@@ -402,36 +452,31 @@ public class AppMain {
         return comunicado;
     }
 
-    private static Comunicado cadastroComunicado() throws SQLException, ClassNotFoundException {
-        try {
-            String data = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ");
-            String setor = (String) chamaSelecaoSetor();
-            String resp = (String) chamaSelecaoUsuario();
-            String titulo = JOptionPane.showInputDialog(null, "Digite o titulo: ");
-            String desc = JOptionPane.showInputDialog(null, "Digite a descrição: ");
-            Integer curtida = Integer.valueOf(JOptionPane.showInputDialog(null, "curtidas: "));
-            String TNU = String.valueOf(chamaSelecaoTipoNU());
-            String TComunicado = String.valueOf(chamaSelecaoTipoComunicado());
+    private static Comunicado cadastroComunicado() {
+        String data = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ");
+        String setor = (String) chamaSelecaoSetor();
+        String resp = (String) chamaSelecaoUsuario();
+        String titulo = JOptionPane.showInputDialog(null, "Digite o titulo: ");
+        String desc = JOptionPane.showInputDialog(null, "Digite a descrição: ");
+        Integer curtida = Integer.valueOf(JOptionPane.showInputDialog(null, "curtidas: "));
+        String TNU = String.valueOf(chamaSelecaoTipoNU());
+        String TComunicado = String.valueOf(chamaSelecaoTipoComunicado());
 
-            if (data.length() > 0 && titulo.length() > 0) {
-                Comunicado comunicado = new Comunicado();
-                DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                comunicado.setDataCadastro(LocalDate.parse(data, formatadorBarra));
-                comunicado.setSetor(getSetorDAO().findSetorByNome(setor));
-                comunicado.setResponsavel(getUsuarioDAO().findUsuarioByNome(resp));
-                comunicado.setTitulo(titulo);
-                comunicado.setDescricao(desc);
-                comunicado.setQtdCurtidas(curtida);
-                comunicado.setTipoUrgencia(TipoNoticiaUrgencia.valueOf(TNU));
-                comunicado.setTipoComunicado(TipoComunicado.valueOf(TComunicado));
-                return comunicado;
-            }
-            return null;
-        } catch (Exception e) {
-            return chamaCadastroComunicado();
+        if (data.length() > 0 && titulo.length() > 0) {
+            Comunicado comunicado = new Comunicado();
+            DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            comunicado.setDataCadastro(LocalDate.parse(data,formatadorBarra ));
+            comunicado.setSetor(getSetorDAO().findSetorByNome(setor));
+            comunicado.setResponsavel(getUsuarioDAO().findUsuarioByNome(resp));
+            comunicado.setTitulo(titulo);
+            comunicado.setDescricao(desc);
+            comunicado.setQtdCurtidas(curtida);
+            comunicado.setTipoUrgencia(TipoNoticiaUrgencia.valueOf(TNU));
+            comunicado.setTipoComunicado(TipoComunicado.valueOf(TComunicado));
+            return comunicado;
         }
+        return null;
     }
-
     private static Object chamaSelecaoComunicado() {
         Object[] selectionValues = getComunicadoDAO().findComunicadoInArray();
         String initialSelection = (String) selectionValues[0];
@@ -451,28 +496,28 @@ public class AppMain {
 
     private static Comunicado editaComunicado(Comunicado comunicadoEdit) {
 
-        String data = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ", comunicadoEdit.getDataCadastro());
-        String setor = (String) chamaSelecaoSetor();
-        String resp = (String) chamaSelecaoUsuario();
-        String titulo = JOptionPane.showInputDialog(null, "Digite o titulo: ", comunicadoEdit.getTitulo());
-        String desc = JOptionPane.showInputDialog(null, "Digite a descrição: ", comunicadoEdit.getDescricao());
-        Integer curtida = Integer.valueOf(JOptionPane.showInputDialog(null, "curtidas: ", comunicadoEdit.getQtdCurtidas()));
-        String TNU = String.valueOf(chamaSelecaoTipoNU());
-        String TComunicado = String.valueOf(chamaSelecaoTipoComunicado());
+       String data = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ",comunicadoEdit.getDataCadastro());
+       String setor = (String) chamaSelecaoSetor();
+       String resp = (String) chamaSelecaoUsuario();
+       String titulo = JOptionPane.showInputDialog(null, "Digite o titulo: ",comunicadoEdit.getTitulo());
+       String desc = JOptionPane.showInputDialog(null, "Digite a descrição: ",comunicadoEdit.getDescricao());
+       Integer curtida = Integer.valueOf(JOptionPane.showInputDialog(null, "curtidas: ",comunicadoEdit.getQtdCurtidas()));
+       String TNU = String.valueOf(chamaSelecaoTipoNU());
+       String TComunicado = String.valueOf(chamaSelecaoTipoComunicado());
 
-        if (data.length() > 0 && titulo.length() > 0) {
-            Comunicado comunicado = new Comunicado();
-            comunicado.setDataCadastro(LocalDate.parse(data));
-            comunicado.setSetor(getSetorDAO().findSetorByNome(setor));
-            comunicado.setResponsavel(getUsuarioDAO().findUsuarioByNome(resp));
-            comunicado.setTitulo(titulo);
-            comunicado.setDescricao(desc);
-            comunicado.setQtdCurtidas(curtida);
-            comunicado.setTipoUrgencia(TipoNoticiaUrgencia.valueOf(TNU));
-            comunicado.setTipoComunicado(TipoComunicado.valueOf(TComunicado));
-            comunicado.setId(comunicadoEdit.getId());
-            return comunicado;
-        }
+       if (data.length() > 0 && titulo.length() > 0) {
+           Comunicado comunicado = new Comunicado();
+           comunicado.setDataCadastro(LocalDate.parse(data));
+           comunicado.setSetor(getSetorDAO().findSetorByNome(setor));
+           comunicado.setResponsavel(getUsuarioDAO().findUsuarioByNome(resp));
+           comunicado.setTitulo(titulo);
+           comunicado.setDescricao(desc);
+           comunicado.setQtdCurtidas(curtida);
+           comunicado.setTipoUrgencia(TipoNoticiaUrgencia.valueOf(TNU));
+           comunicado.setTipoComunicado(TipoComunicado.valueOf(TComunicado));
+           comunicado.setId(comunicadoEdit.getId());
+           return comunicado;
+       }
 
         return null;
     }
@@ -485,16 +530,16 @@ public class AppMain {
                 "Comunicado",
                 JOptionPane.QUESTION_MESSAGE);
 
-        if (codigo.equals("1")) {
+        if(codigo.equals("1")) {
             return TipoComunicado.NOTICIA;
-        } else if (codigo.equals("2")) {
+        } else if(codigo.equals("2")) {
             return TipoComunicado.COMEMORATIVO;
-        } else if (codigo.equals("3")) {
+        } else if(codigo.equals("3")) {
             return TipoComunicado.AVISOS;
-        } else if (codigo.equals("4")) {
+        } else if(codigo.equals("4")) {
             return TipoComunicado.ENTRETERIMENTO;
         } else {
-            JOptionPane.showMessageDialog(null, "Codigo do comunicado inválido!!", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Codigo do comunicado inválido!!","Erro", JOptionPane.ERROR_MESSAGE);
             chamaSelecaoTipoComunicado();
         }
         return null;
@@ -507,76 +552,15 @@ public class AppMain {
                 "Comunicado",
                 JOptionPane.QUESTION_MESSAGE);
 
-        if (codigo.equals("1")) {
+        if(codigo.equals("1")) {
             return TipoNoticiaUrgencia.BAIXA;
-        } else if (codigo.equals("2")) {
+        } else if(codigo.equals("2")) {
             return TipoNoticiaUrgencia.MEDIA;
-        } else if (codigo.equals("3")) {
+        } else if(codigo.equals("3")) {
             return TipoNoticiaUrgencia.ALTA;
         } else {
-            JOptionPane.showMessageDialog(null, "tipo de Urgencia inválido!!", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"tipo de Urgencia inválido!!","Erro", JOptionPane.ERROR_MESSAGE);
             chamaSelecaoTipoNU();
-        }
-        return null;
-    }
-
-    public static Comentario chamaCastroComentario(Comunicado comunicado) throws SQLException, ClassNotFoundException {
-        Integer opcaoCrud = chamaOpcaoCrud();
-        Comentario comentario = null;
-
-        switch (opcaoCrud) {
-            case 0: //Inserção
-                comentario = cadastroComentario(comunicado);
-                if (comentario != null) {
-                    JOptionPane.showMessageDialog(null, "Comentario feito com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "A campos vazios !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
-                    chamaOpcaoCrud();
-                }
-                break;
-            case 1: //Alteração
-                try {
-////                    usuario = selecaoDeUsuario();
-////                    usuario = editaUsuario(usuario);
-//                    if (comentario != null) {
-//                        JOptionPane.showMessageDialog(null,"Usuario alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
-//                    } else {
-//                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
-//                        chamaCadastroUsuario();
-//                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não temos usuarios cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                    chamaCadastroUsuario();
-                }
-                break;
-            case 2: //Exclusão
-                try {
-//                    comentario = selecaoDeUsuario();
-//                    getUsuarioDAO().remover(usuario);
-//                    comentario = null;
-                    JOptionPane.showMessageDialog(null, "Usuario excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não Há nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                    //chamaCadastroUsuario();
-                }
-                break;
-            default:
-                ChamarMenuPrincipal();
-                break;
-        }
-        return comentario;
-    }
-
-    private static Comentario cadastroComentario(Comunicado comunicado) {
-        String comentarioString = JOptionPane.showInputDialog(null, "Digite o comentario: ");
-
-        if (comentarioString.length() > 0) {
-            Comentario comentario1 = new Comentario();
-            comentario1.setComunicado(comunicado);
-            comentario1.setUsuario(selecaoDeUsuario());
-            comentario1.setComentario(comentarioString);
-            comentario1.setDataComentario(LocalDate.now());
-            return comentario1;
         }
         return null;
     }
