@@ -60,11 +60,12 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
     public void insere(Comentario comentario) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("insert into comentarios value(?,?,?,?,?)");
-        stmt.setInt(1, comentario.getId().intValue());
-        stmt.setInt(2, comentario.getComunicado().getId().intValue());
-        stmt.setString(3, comentario.getComentario());
+        PreparedStatement stmt = connection.prepareStatement("insert into comentarios (cd_comunicado, comentario, cd_usuario, dt_comentario)" +
+                "value(?,?,?,?)");
+        stmt.setInt(1, comentario.getComunicado().getId().intValue());
+        stmt.setString(2, comentario.getComentario());
         stmt.setInt(3, comentario.getUsuario().getId().intValue());
+        stmt.setString(4, comentario.getDataComentario().toString());
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
         connection.close();
@@ -90,24 +91,24 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
         return comments;
     }
 
-    public static Comentario buscaPorId(Long id) throws SQLException, ClassNotFoundException {
+    public static List<Comentario> buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Comentario> comments = new ArrayList<>();
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE cd_comunicado = ?");
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
 
         while (resultSet.next()) {
             Comentario comentario = new Comentario();
             comentario.setId(resultSet.getLong(1));
-            comentario.setComunicado(ComunicadoDAO.buscaPorId(resultSet.getLong(1)));
+            comentario.setComunicado(ComunicadoDAO.buscaPorId(resultSet.getLong(2)));
             comentario.setComentario(resultSet.getString(3));
             comentario.setUsuario(UsuarioDAO.buscaPorId(resultSet.getLong(4)));
-            //comentario.setDataComentario(resultSet.getString(2));
+            comentario.setDataComentario(resultSet.getDate(5).toLocalDate());
             comments.add(comentario);
         }
         connection.close();
-        return comments.get(0);
+        return comments;
     }
 
     public void update(Comentario comentario) throws SQLException, ClassNotFoundException {

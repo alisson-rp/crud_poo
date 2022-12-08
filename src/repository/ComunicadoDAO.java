@@ -12,7 +12,6 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
 
     static List<Comunicado> comunicados = new ArrayList<>();
 
-
     @Override
     public void salvar(Comunicado comunicado) {
         ComunicadoDAO comunicadoRepository = new ComunicadoDAO();
@@ -77,7 +76,7 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
         connection.close();
     }
 
-    public List<Comunicado> busca() throws SQLException, ClassNotFoundException {
+    public static List<Comunicado> busca() throws SQLException, ClassNotFoundException {
         List<Comunicado> comunicados = new ArrayList<>();
         Connection connection = getConnection();
 
@@ -112,9 +111,31 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
         while (resultSet.next()) {
             Comunicado comunicado = new Comunicado();
             comunicado.setId(resultSet.getLong(1));
+            return comunicado;
         }
         connection.close();
-        return comunicados.get(0);
+        return null;
+    }
+
+    public static void curtiComentario(Long id) throws SQLException, ClassNotFoundException {
+            Integer curtidas = 0;
+            Connection connection = getConnection();
+            PreparedStatement stmt = connection.prepareStatement("select max(curtidas) from comunicados where cd_comunicado = ?");
+            stmt.setLong(1, id);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                curtidas = resultSet.getInt(1) + 1;
+            }
+
+            PreparedStatement stmtUpdate = connection.prepareStatement("update comunicados set curtidas = ?  where cd_comunicado = ?");
+            stmtUpdate.setLong(1, curtidas);
+            stmtUpdate.setLong(2, id);
+
+            int i = stmtUpdate.executeUpdate();
+            System.out.println(i + "linhas atualizadas");
+            connection.close();
     }
 
     public void update(Comunicado comunicado) throws SQLException, ClassNotFoundException {
