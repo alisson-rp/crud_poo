@@ -4,7 +4,10 @@ import modal.Comunicado;
 import modal.TipoComunicado;
 import modal.TipoNoticiaUrgencia;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,24 +121,24 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
     }
 
     public static void curtiComentario(Long id) throws SQLException, ClassNotFoundException {
-            Integer curtidas = 0;
-            Connection connection = getConnection();
-            PreparedStatement stmt = connection.prepareStatement("select max(curtidas) from comunicados where cd_comunicado = ?");
-            stmt.setLong(1, id);
+        Integer curtidas = 0;
+        Connection connection = getConnection();
+        PreparedStatement stmt = connection.prepareStatement("select max(curtidas) from comunicados where cd_comunicado = ?");
+        stmt.setLong(1, id);
 
-            ResultSet resultSet = stmt.executeQuery();
+        ResultSet resultSet = stmt.executeQuery();
 
-            while (resultSet.next()) {
-                curtidas = resultSet.getInt(1) + 1;
-            }
+        while (resultSet.next()) {
+            curtidas = resultSet.getInt(1) + 1;
+        }
 
-            PreparedStatement stmtUpdate = connection.prepareStatement("update comunicados set curtidas = ?  where cd_comunicado = ?");
-            stmtUpdate.setLong(1, curtidas);
-            stmtUpdate.setLong(2, id);
+        PreparedStatement stmtUpdate = connection.prepareStatement("update comunicados set curtidas = ?  where cd_comunicado = ?");
+        stmtUpdate.setLong(1, curtidas);
+        stmtUpdate.setLong(2, id);
 
-            int i = stmtUpdate.executeUpdate();
-            System.out.println(i + "linhas atualizadas");
-            connection.close();
+        int i = stmtUpdate.executeUpdate();
+        System.out.println(i + "linhas atualizadas");
+        connection.close();
     }
 
     public void update(Comunicado comunicado) throws SQLException, ClassNotFoundException {

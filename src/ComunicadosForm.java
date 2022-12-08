@@ -15,7 +15,7 @@ public class ComunicadosForm extends JPanel {
     public static final long serialVersionUID = 1L;
 
     public static final String[] nomeColunas =
-            {"Codigo", "Titulo","Data","Setor", "Urgencia", "Tipo","Responsavel","Curtidas", ""};
+            {"Codigo", "Titulo", "Data", "Setor", "Urgencia", "Tipo", "Responsavel", "Curtidas", ""};
 
     protected JTable table;
     protected JScrollPane scroller;
@@ -51,7 +51,7 @@ public class ComunicadosForm extends JPanel {
                     frame.setVisible(false);
                     try {
                         AppMain.ChamarMenuPrincipal();
-                    }  catch ( SQLException e) {
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();

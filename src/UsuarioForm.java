@@ -15,7 +15,7 @@ public class UsuarioForm extends JPanel {
     public static final long serialVersionUID = 1L;
 
     public static final String[] nomeColunas =
-            {"Codigo", "Usuario", "Email","Setor", ""};
+            {"Codigo", "Usuario", "Email", "Setor", ""};
 
     protected JTable table;
     protected JScrollPane scroller;
@@ -51,7 +51,7 @@ public class UsuarioForm extends JPanel {
                     frame.setVisible(false);
                     try {
                         AppMain.ChamarMenuPrincipal();
-                    }  catch ( SQLException e) {
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();

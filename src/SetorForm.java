@@ -51,7 +51,7 @@ public class SetorForm extends JPanel {
                     frame.setVisible(false);
                     try {
                         AppMain.ChamarMenuPrincipal();
-                    }  catch ( SQLException e) {
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();

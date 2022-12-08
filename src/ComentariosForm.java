@@ -51,7 +51,7 @@ public class ComentariosForm extends JPanel {
                     frame.setVisible(false);
                     try {
                         AppMain.chamaMenuComunicado();
-                    }  catch ( SQLException e) {
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
