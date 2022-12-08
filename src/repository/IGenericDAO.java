@@ -9,7 +9,7 @@ public interface IGenericDAO<E> {
 
     void remover(E objeto) throws SQLException,  ClassNotFoundException;
 
-    List<E> buscarTodos() throws SQLException, ClassNotFoundException;
+     List<E> buscarTodos() throws SQLException, ClassNotFoundException;
 
     List<E> buscarPorNome(String nome);
 }

@@ -20,14 +20,13 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
             if (setor.getId() != null) {
                 setorRepository.update(setor);
             } else {
-                setor.setId(setorRepository.proximoId().longValue());
                 setorRepository.insere(setor);
             }
 
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        setores.add(setor);
+
     }
 
     @Override
@@ -37,7 +36,7 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
     }
 
     @Override
-    public List<Setor> buscarTodos() {
+    public  List<Setor> buscarTodos() {
         System.out.println(setores);
         SetorDAO setorRepository = new SetorDAO();
         try {
@@ -62,9 +61,8 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
     public void insere(Setor setor) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("insert into setores value(?,?)");
-        stmt.setInt(1, setor.getId().intValue());
-        stmt.setString(2, setor.getNome());
+        PreparedStatement stmt = connection.prepareStatement("insert into setores (nm_setor) value(?)");
+        stmt.setString(1, setor.getNome());
 
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
@@ -91,7 +89,7 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
     public static Setor buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Setor> setores = new ArrayList<>();
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("select * from setores WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("select * from setores WHERE cd_setor = ?");
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         while (resultSet.next()) {
@@ -106,7 +104,7 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
 
     public void update(Setor setor) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET nome = ? WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET nome = ? WHERE cd_setor = ?");
         stmt.setString(1, setor.getNome());
         stmt.setInt(2, setor.getId().intValue());
 
@@ -116,26 +114,15 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
         connection.close();
     }
 
-    public Integer proximoId() throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT max(id) from setores");
-        ResultSet resultSet = stmt.executeQuery();
-
-        while (resultSet.next()) {
-            return resultSet.getInt(1) + 1;
-        }
-        return 1;
-    }
-
     public void delete(Setor setor) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE from setores WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE from setores WHERE cd_setor = ?");
         stmt.setInt(1, setor.getId().intValue());
         stmt.executeUpdate();
         connection.close();
     }
 
-    public Object[] findSetoresInArray() {
+    public  Object[] findSetoresInArray() {
         List<Setor> setores = buscarTodos();
         List<String> setoresNomes = new ArrayList<>();
 
@@ -144,5 +131,15 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
         }
 
         return setoresNomes.toArray();
+    }
+
+    public  Setor findSetorByNome(String busca) {
+        List<Setor> setores = buscarTodos();
+        for (Setor setor : setores) {
+            if (busca.equals(setor.getNome())) {
+                return setor;
+            }
+        }
+        return null;
     }
 }

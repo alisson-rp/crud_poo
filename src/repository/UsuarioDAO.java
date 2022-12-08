@@ -18,10 +18,9 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
     public void salvar(Usuario usuario) {
         UsuarioDAO usuarioRepository = new UsuarioDAO();
         try {
-            if (usuario.getId() == null) {
+            if (usuario.getId() != null) {
                 usuarioRepository.update(usuario);
             } else {
-                usuario.setId(usuarioRepository.proximoId().longValue());
                 usuarioRepository.insere(usuario);
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -39,9 +38,9 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
     public List<Usuario> buscarTodos() {
         System.out.println(usuarios);
 
-        UsuarioDAO pessoaRepository = new UsuarioDAO();
+        UsuarioDAO usuarioRepository = new UsuarioDAO();
         try {
-            usuarios = pessoaRepository.busca();
+            usuarios = usuarioRepository.busca();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -63,11 +62,10 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
     public void insere(Usuario usuario) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("insert into usuarios value(?,?,?,?)");
-        stmt.setInt(1, usuario.getId().intValue());
-        stmt.setString(2, usuario.getUsuario());
-        stmt.setString(3, usuario.getEmail());
-        stmt.setInt(4, usuario.getSetor().getId().intValue());
+        PreparedStatement stmt = connection.prepareStatement("insert into usuarios (lg_usuario,email,cd_setor) value(?,?,?)");
+        stmt.setString(1, usuario.getUsuario());
+        stmt.setString(2, usuario.getEmail());
+        stmt.setInt(3, usuario.getSetor().getId().intValue());
 
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
@@ -78,7 +76,7 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
         List<Usuario> usuarios = new ArrayList<>();
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuarios");
+        PreparedStatement stmt = connection.prepareStatement("SELECT cd_usuario, lg_usuario, email, cd_setor FROM usuarios");
         ResultSet resultSet = stmt.executeQuery();
 
         while (resultSet.next()) {
@@ -88,6 +86,7 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
             usuario.setEmail(resultSet.getString(3));
             long idSetor = resultSet.getLong(4);
             usuario.setSetor(SetorDAO.buscaPorId(idSetor));
+            usuarios.add(usuario);
         }
         connection.close();
         return usuarios;
@@ -96,7 +95,7 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
     public static Usuario buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Usuario> usuarios = new ArrayList<>();
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("select * from usuarios WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("select * from usuarios WHERE cd_usuario = ?");
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         while (resultSet.next()) {
@@ -113,7 +112,7 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
 
     public void update(Usuario usuario) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("UPDATE usuarios SET lg_usuario = ?, email = ?, cd_setor = ? WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("UPDATE usuarios SET lg_usuario = ?, email = ?, cd_setor = ? WHERE cd_usuario = ?");
         stmt.setString(1, usuario.getUsuario());
         stmt.setString(2, usuario.getEmail());
         stmt.setInt(3, usuario.getSetor().getId().intValue());
@@ -124,20 +123,9 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
         connection.close();
     }
 
-    public Integer proximoId() throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT max(id) from usuarios");
-        ResultSet resultSet = stmt.executeQuery();
-
-        while (resultSet.next()) {
-            return resultSet.getInt(1) + 1;
-        }
-        return 1;
-    }
-
     public void delete(Usuario usuario) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE from pessoas WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE from usuarios WHERE cd_usuario = ?");
         stmt.setInt(1, usuario.getId().intValue());
         stmt.executeUpdate();
         connection.close();
