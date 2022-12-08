@@ -17,7 +17,7 @@ public class AppMainCadastro {
 
     public static Setor cadastrarSetor() {
         Setor novoSetor = new Setor();
-        novoSetor.setNome(JOptionPane.showInputDialog(null,"Nome: ", "Cadastro de Setor", JOptionPane.QUESTION_MESSAGE));
+        novoSetor.setNome(JOptionPane.showInputDialog(null, "Nome: ", "Cadastro de Setor", JOptionPane.QUESTION_MESSAGE));
 
         return novoSetor;
     }
@@ -32,8 +32,8 @@ public class AppMainCadastro {
         Usuario reponsavel = new Usuario();
         novoComunicado.setResponsavel(reponsavel);
 
-        novoComunicado.setTitulo(JOptionPane.showInputDialog(null,"Titulo: ", "Cadastro de Setor", JOptionPane.QUESTION_MESSAGE));
-        novoComunicado.setDescricao(JOptionPane.showInputDialog(null,"Descrição: ", "Cadastro de Comunicado", JOptionPane.QUESTION_MESSAGE));
+        novoComunicado.setTitulo(JOptionPane.showInputDialog(null, "Titulo: ", "Cadastro de Setor", JOptionPane.QUESTION_MESSAGE));
+        novoComunicado.setDescricao(JOptionPane.showInputDialog(null, "Descrição: ", "Cadastro de Comunicado", JOptionPane.QUESTION_MESSAGE));
         //novoComunicado.setTipoUrgencia();//Fazer selects
         //novoComunicado.setTipoComunicado();//Fazer selects
         return novoComunicado;
@@ -41,15 +41,15 @@ public class AppMainCadastro {
 
     public static void vizulizarComunicado(Comunicado comunicado) throws SQLException, ClassNotFoundException {
         String texto = "";
-        texto = "############################ "+ comunicado.getTitulo() +" ############################" +
+        texto = "############################ " + comunicado.getTitulo() + " ############################" +
                 "\n Por:" + comunicado.getResponsavel().getUsuario() +
-                "\n Setor: "+ comunicado.getSetor().getNome() +
+                "\n Setor: " + comunicado.getSetor().getNome() +
                 "\n Tema: " + comunicado.getTipoComunicado() +
                 "\n Data: " + comunicado.getDataCadastro() +
                 "\n \n \n Urgencia/Prioridade: " + comunicado.getTipoUrgencia() +
                 "\n Comunicado : " + comunicado.getDescricao() +
-                "\n \n \n \n Curtidas: " + comunicado.getQtdCurtidas()+
-                "\n #####################################################################################" ;
+                "\n \n \n \n Curtidas: " + comunicado.getQtdCurtidas() +
+                "\n #####################################################################################";
 
         String[] opcoes;
         opcoes = new String[]{"Comentar", "Curtir", "Ver comentarios", "Voltar"};
@@ -69,7 +69,7 @@ public class AppMainCadastro {
 
         switch (resposta) {
             case 0:
-               Comentario comment = AppMain.chamaCastroComentario(comunicado);
+                Comentario comment = AppMain.chamaCastroComentario(comunicado);
                 if (comment != null) AppMain.getCommentDAO().salvar(comment);
                 vizulizarComunicado(comunicado);
                 break;
