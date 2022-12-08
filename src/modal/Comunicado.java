@@ -13,7 +13,6 @@ public class Comunicado extends Entity {
     private TipoNoticiaUrgencia tipoUrgencia;
     private TipoComunicado tipoComunicado;
 
-
     public LocalDate getDataCadastro() {
         return dataCadastro;
     }

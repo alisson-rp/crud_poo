@@ -17,10 +17,9 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
     public void salvar(Comunicado comunicado) {
         ComunicadoDAO comunicadoRepository = new ComunicadoDAO();
         try {
-            if (comunicado.getId() == null) {
+            if (comunicado.getId() != null) {
                 comunicadoRepository.update(comunicado);
             } else {
-                comunicado.setId(comunicadoRepository.proximoId().longValue());
                 comunicadoRepository.insere(comunicado);
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -62,16 +61,16 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
     public void insere(Comunicado comunicado) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("insert into comunicados value(?,?,?,?)");
-        stmt.setInt(1, comunicado.getId().intValue());
-        stmt.setString(2, comunicado.getDataCadastro().toString());
-        stmt.setInt(3, comunicado.getSetor().getId().intValue());
-        stmt.setInt(4, comunicado.getResponsavel().getId().intValue());
-        stmt.setString(5, comunicado.getTitulo());
-        stmt.setString(6, comunicado.getDescricao());
-        stmt.setInt(7, comunicado.getQtdCurtidas());
-        stmt.setInt(8, comunicado.getTipoUrgencia().ordinal());
-        stmt.setInt(9, comunicado.getTipoComunicado().ordinal());
+        PreparedStatement stmt = connection.prepareStatement("insert into comunicados (dt_cadastro,cd_setor,cd_tipoUrgencia,cd_tipoComunicado," +
+                "cd_responsavel,titulo,descricao,curtidas) value(?,?,?,?,?,?,?,?)");
+        stmt.setString(1, comunicado.getDataCadastro().toString());
+        stmt.setInt(2, comunicado.getSetor().getId().intValue());
+        stmt.setInt(3, comunicado.getTipoUrgencia().ordinal());
+        stmt.setInt(4, comunicado.getTipoComunicado().ordinal());
+        stmt.setInt(5, comunicado.getResponsavel().getId().intValue());
+        stmt.setString(6, comunicado.getTitulo());
+        stmt.setString(7, comunicado.getDescricao());
+        stmt.setInt(8, comunicado.getQtdCurtidas());
 
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
@@ -91,13 +90,14 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
             comunicado.setDataCadastro(resultSet.getDate(2).toLocalDate());
             long idSetor = resultSet.getLong(3);
             comunicado.setSetor(SetorDAO.buscaPorId(idSetor));
-            long idResponsavel = resultSet.getLong(4);
+            comunicado.setTipoUrgencia(TipoNoticiaUrgencia.getTipoById(resultSet.getInt(4)));
+            comunicado.setTipoComunicado(TipoComunicado.getTipoById(resultSet.getInt(5)));
+            long idResponsavel = resultSet.getLong(6);
             comunicado.setResponsavel(UsuarioDAO.buscaPorId(idResponsavel));
-            comunicado.setTitulo(resultSet.getString(5));
-            comunicado.setDescricao(resultSet.getString(6));
-            comunicado.setQtdCurtidas(resultSet.getInt(7));
-            comunicado.setTipoUrgencia(TipoNoticiaUrgencia.getTipoById(resultSet.getInt(8)));
-            comunicado.setTipoComunicado(TipoComunicado.getTipoById(resultSet.getInt(9)));
+            comunicado.setTitulo(resultSet.getString(7));
+            comunicado.setDescricao(resultSet.getString(8));
+            comunicado.setQtdCurtidas(resultSet.getInt(9));
+            comunicados.add(comunicado);
         }
         connection.close();
         return comunicados;
@@ -106,7 +106,7 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
     public static Comunicado buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Comunicado> comunicados = new ArrayList<>();
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("select * from comunicados WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("select * from comunicados WHERE cd_comunicado = ?");
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         while (resultSet.next()) {
@@ -122,7 +122,7 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
         PreparedStatement stmt = connection.prepareStatement(
                 "UPDATE comunicados SET dt_cadastro = ?, cd_setor = ?, cd_tipoUrgencia = ? " +
                         "cd_tipoComunicado = ?, cd_responsavel = ?, titulo = ?, " +
-                        "descricao = ?, curtidas = ?  WHERE id = ?");
+                        "descricao = ?, curtidas = ?  WHERE cd_comunicado = ?");
         stmt.setString(1, comunicado.getDataCadastro().toString());
         stmt.setInt(2, comunicado.getSetor().getId().intValue());
         stmt.setInt(3, comunicado.getTipoUrgencia().ordinal());
@@ -137,20 +137,9 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
         connection.close();
     }
 
-    public Integer proximoId() throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT max(id) from comunicados");
-        ResultSet resultSet = stmt.executeQuery();
-
-        while (resultSet.next()) {
-            return resultSet.getInt(1) + 1;
-        }
-        return 1;
-    }
-
     public void delete(Comunicado comunicado) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE from comunicados WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE from comunicados WHERE cd_comunicado = ?");
         stmt.setInt(1, comunicado.getId().intValue());
         stmt.executeUpdate();
         connection.close();

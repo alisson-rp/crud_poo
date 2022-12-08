@@ -1,5 +1,6 @@
 package repository;
 
+import modal.Setor;
 import modal.Usuario;
 
 import java.sql.Connection;
@@ -105,6 +106,7 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
             usuario.setEmail(resultSet.getString(3));
             long idSetor = resultSet.getLong(4);
             usuario.setSetor(SetorDAO.buscaPorId(idSetor));
+            usuarios.add(usuario);
         }
         connection.close();
         return usuarios.get(0);
@@ -140,5 +142,15 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
         }
 
         return usuariosNomes.toArray();
+    }
+
+    public Usuario findUsuarioByNome(String busca) {
+        List<Usuario> usuarios = buscarTodos();
+        for (Usuario usuario : usuarios) {
+            if (busca.equals(usuario.getUsuario())) {
+                return usuario;
+            }
+        }
+        return null;
     }
 }
