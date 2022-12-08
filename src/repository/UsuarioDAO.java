@@ -1,6 +1,5 @@
 package repository;
 
-import modal.Setor;
 import modal.Usuario;
 
 import java.sql.Connection;
@@ -73,7 +72,7 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
         connection.close();
     }
 
-    public List<Usuario> busca() throws SQLException, ClassNotFoundException {
+    public static List<Usuario> busca() throws SQLException, ClassNotFoundException {
         List<Usuario> usuarios = new ArrayList<>();
         Connection connection = getConnection();
 

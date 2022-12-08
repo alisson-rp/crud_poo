@@ -69,7 +69,7 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
         connection.close();
     }
 
-    public List<Setor> busca() throws SQLException, ClassNotFoundException {
+    public static List<Setor> busca() throws SQLException, ClassNotFoundException {
         List<Setor> setores = new ArrayList<>();
         Connection connection = getConnection();
 

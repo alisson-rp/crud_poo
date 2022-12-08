@@ -1,4 +1,5 @@
 import modal.*;
+import repository.ComentarioDAO;
 import repository.ComunicadoDAO;
 import repository.SetorDAO;
 import repository.UsuarioDAO;
@@ -16,6 +17,11 @@ public class AppMain {
     public static UsuarioDAO getUsuarioDAO() {
         UsuarioDAO usuarioDAODAO = new UsuarioDAO();
         return usuarioDAODAO;
+    }
+
+    public static ComentarioDAO getCommentDAO() {
+        ComentarioDAO commentDAO = new ComentarioDAO();
+        return commentDAO;
     }
 
     public static ComunicadoDAO getComunicadoDAO() {
@@ -81,7 +87,7 @@ public class AppMain {
                 chamaMenuUsuario();
                 break;
             case 1:
-                //processo para Visualização de usuario
+                AppMainCadastro.chamaRelatorioUsuario();
                 break;
             case 2:
                 ChamarMenuPrincipal();
@@ -111,7 +117,7 @@ public class AppMain {
                 chamaMenuSetores();
                 break;
             case 1:
-                //processo para visualização de setor
+                AppMainCadastro.chamaRelatorioSetores();
                 break;
             case 2:
                 ChamarMenuPrincipal();
@@ -141,9 +147,13 @@ public class AppMain {
                 chamaMenuComunicado();
                 break;
             case 1:
-                //processo visualizar
+                Comunicado comunicado1 = selecaoDeComunicado();
+                AppMainCadastro.vizulizarComunicado(comunicado1);
                 break;
             case 2:
+                AppMainCadastro.chamaRelatorioComunicados();
+                break;
+            case 3:
                 ChamarMenuPrincipal();
                 break;
         }
@@ -201,6 +211,67 @@ public class AppMain {
                 break;
         }
         return usuario;
+    }
+
+    public static Comentario chamaCastroComentario(Comunicado comunicado) throws SQLException, ClassNotFoundException {
+        Integer opcaoCrud = chamaOpcaoCrud();
+        Comentario comentario = null;
+
+        switch (opcaoCrud) {
+            case 0: //Inserção
+                comentario = cadastroComentario(comunicado);
+                if (comentario != null) {
+                    JOptionPane.showMessageDialog(null,"Comentario feito com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,"A campos vazios !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
+                    chamaOpcaoCrud();
+                }
+                break;
+            case 1: //Alteração
+                try {
+////                    usuario = selecaoDeUsuario();
+////                    usuario = editaUsuario(usuario);
+//                    if (comentario != null) {
+//                        JOptionPane.showMessageDialog(null,"Usuario alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+//                    } else {
+//                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
+//                        chamaCadastroUsuario();
+//                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Não temos usuarios cadastrados","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    chamaCadastroUsuario();
+                }
+                break;
+            case 2: //Exclusão
+                try {
+//                    comentario = selecaoDeUsuario();
+//                    getUsuarioDAO().remover(usuario);
+//                    comentario = null;
+                    JOptionPane.showMessageDialog(null,"Usuario excluido com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Não Há nada para excluir","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    //chamaCadastroUsuario();
+                }
+                break;
+            default:
+                ChamarMenuPrincipal();
+                break;
+        }
+        return comentario;
+    }
+
+    private static Comentario cadastroComentario(Comunicado comunicado) {
+        String comentarioString = JOptionPane.showInputDialog(null, "Digite o comentario: ");
+
+        if(comentarioString.length() > 0){
+            Comentario comentario1 = new Comentario();
+            comentario1.setComunicado(comunicado);
+            comentario1.setUsuario(selecaoDeUsuario());
+            comentario1.setComentario(comentarioString);
+            comentario1.setDataComentario(LocalDate.now());
+            return comentario1;
+        }
+        return null;
     }
 
     private static Usuario cadastroUsuario() {
@@ -418,7 +489,7 @@ public class AppMain {
         Object[] selectionValues = getComunicadoDAO().findComunicadoInArray();
         String initialSelection = (String) selectionValues[0];
         Object selection = JOptionPane.showInputDialog(null, "Selecione o comunicado?",
-                "Setores", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+                "Comunicados", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         List<Comunicado> comunicados = getComunicadoDAO().buscarPorNome((String) selection);
         return comunicados.get(0);
     }
