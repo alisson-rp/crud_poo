@@ -15,7 +15,7 @@ public class ComentariosForm extends JPanel {
     public static final long serialVersionUID = 1L;
 
     public static final String[] nomeColunas =
-            {"Comentario", "Usuario", "Data", ""};
+            {"Comentário", "Usuário", "Data", ""};
 
     protected JTable table;
     protected JScrollPane scroller;
@@ -44,7 +44,7 @@ public class ComentariosForm extends JPanel {
     public static void emitirRelatorioComentario(List<Comentario> comments) {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            JFrame frame = new JFrame("Comentarios");
+            JFrame frame = new JFrame("Comentários");
 
             frame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent evt) {

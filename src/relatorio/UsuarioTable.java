@@ -10,8 +10,8 @@ public class UsuarioTable extends AbstractTableModel {
 
     public static final int INDEX_CODIGO = 0;
     public static final int INDEX_USUARIO = 1;
-    public static final int INDEX_EMAIL  = 2;
-    public static final int INDEX_SETOR  = 3;
+    public static final int INDEX_EMAIL = 2;
+    public static final int INDEX_SETOR = 3;
     public static final int INDEX_ESCONDIDO = 4;
 
     protected String[] nomeColunas;

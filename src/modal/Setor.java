@@ -1,6 +1,6 @@
 package modal;
 
-public class Setor extends Entity{
+public class Setor extends Entity {
 
     private String nome;
 
@@ -8,7 +8,8 @@ public class Setor extends Entity{
         this.nome = nome;
     }
 
-    public Setor() {}
+    public Setor() {
+    }
 
     public String getNome() {
         return nome;

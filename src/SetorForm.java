@@ -15,7 +15,7 @@ public class SetorForm extends JPanel {
     public static final long serialVersionUID = 1L;
 
     public static final String[] nomeColunas =
-            {"Codigo", "Setor", ""};
+            {"Código", "Setor", ""};
 
     protected JTable table;
     protected JScrollPane scroller;

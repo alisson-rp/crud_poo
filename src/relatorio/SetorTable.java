@@ -5,7 +5,7 @@ import modal.Setor;
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
-public class SetorTable  extends AbstractTableModel {
+public class SetorTable extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
 
     public static final int INDEX_CODIGO = 0;

@@ -2,7 +2,7 @@ package modal;
 
 import java.time.LocalDate;
 
-public class Comentario extends Entity{
+public class Comentario extends Entity {
     private Comunicado comunicado;
     private String comentario;
     private Usuario usuario;

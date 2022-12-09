@@ -165,6 +165,9 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
         Connection connection = getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE from comunicados WHERE cd_comunicado = ?");
         stmt.setInt(1, comunicado.getId().intValue());
+        PreparedStatement stmt2 = connection.prepareStatement("DELETE from comentarios WHERE cd_comunicado = ?");
+        stmt2.setInt(1, comunicado.getId().intValue());
+        stmt2.executeUpdate();
         stmt.executeUpdate();
         connection.close();
     }

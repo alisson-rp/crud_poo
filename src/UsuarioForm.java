@@ -15,7 +15,7 @@ public class UsuarioForm extends JPanel {
     public static final long serialVersionUID = 1L;
 
     public static final String[] nomeColunas =
-            {"Codigo", "Usuario", "Email", "Setor", ""};
+            {"Código", "Usuário", "E-mail", "Setor", ""};
 
     protected JTable table;
     protected JScrollPane scroller;
@@ -44,7 +44,7 @@ public class UsuarioForm extends JPanel {
     public static void emitirRelatorioUsuario(List<Usuario> usuarios) {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            JFrame frame = new JFrame("Usuarios");
+            JFrame frame = new JFrame("Usuários");
 
             frame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent evt) {

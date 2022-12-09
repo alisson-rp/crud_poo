@@ -10,7 +10,7 @@ public class ComentarioTable extends AbstractTableModel {
 
     public static final int INDEX_COMENTARIO = 0;
     public static final int INDEX_USUARIO = 1;
-    public static final int INDEX_DATA  = 2;
+    public static final int INDEX_DATA = 2;
     public static final int INDEX_ESCONDIDO = 3;
 
     protected String[] nomeColunas;
