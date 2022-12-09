@@ -43,8 +43,8 @@ public class AppMain {
 
         int resposta = JOptionPane.showOptionDialog(
                 null
-                , "Escolha uma opção:"
-                , "Menu"
+                , "Escolha uma opção: "
+                , "MENU PRINCIPAL"
                 , JOptionPane.YES_NO_OPTION
                 , JOptionPane.PLAIN_MESSAGE
                 , null
@@ -70,12 +70,12 @@ public class AppMain {
 
     public static void chamaMenuUsuario() throws SQLException, ClassNotFoundException {
         String[] opcoes;
-        opcoes = new String[]{"Operações", "Vizualizar", "Voltar"};
+        opcoes = new String[]{"Operações", "Visualizar", "Voltar"};
 
         int resposta = JOptionPane.showOptionDialog(
                 null
-                , "Escolha uma opção:"
-                , "Menu"
+                , "Escolha uma opção: "
+                , "MENU USUÁRIOS"
                 , JOptionPane.YES_NO_OPTION
                 , JOptionPane.PLAIN_MESSAGE
                 , null
@@ -100,12 +100,12 @@ public class AppMain {
 
     public static void chamaMenuSetores() throws SQLException, ClassNotFoundException {
         String[] opcoes;
-        opcoes = new String[]{"Operações", "Vizualizar", "Voltar"};
+        opcoes = new String[]{"Operações", "Visualizar", "Voltar"};
 
         int resposta = JOptionPane.showOptionDialog(
                 null
-                , "Escolha uma opção:"
-                , "Menu"  // Titulo
+                , "Escolha uma opção: "
+                , "MENU SETORES"  // Titulo
                 , JOptionPane.YES_NO_OPTION
                 , JOptionPane.PLAIN_MESSAGE
                 , null
@@ -130,12 +130,12 @@ public class AppMain {
 
     public static void chamaMenuComunicado() throws SQLException, ClassNotFoundException {
         String[] opcoes;
-        opcoes = new String[]{"Operações", "Vizualizar", "Relatório", "Voltar"};
+        opcoes = new String[]{"Operações", "Visualizar", "Relatório", "Voltar"};
 
         int resposta = JOptionPane.showOptionDialog(
                 null
-                , "Escolha uma opção:"
-                , "Menu"  // Titulo
+                , "Escolha uma opção: "
+                , "MENU COMUNICADOS"  // Titulo
                 , JOptionPane.YES_NO_OPTION
                 , JOptionPane.PLAIN_MESSAGE
                 , null
@@ -169,8 +169,8 @@ public class AppMain {
 
     private static Integer chamaOpcaoCrud() {
         String[] opcao = {"Inserção", "Alteração", "Exclusão", "Voltar"};
-        int tipoOpcao = JOptionPane.showOptionDialog(null, "Escolha uma opção:",
-                "Operação no cadastro: ",
+        int tipoOpcao = JOptionPane.showOptionDialog(null, "Escolha uma opção: ",
+                "OPERAÇÕES ",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcao, opcao[0]);
         return tipoOpcao;
     }
@@ -182,9 +182,9 @@ public class AppMain {
             case 0: //Inserção
                 usuario = cadastroUsuario();
                 if (usuario != null) {
-                    JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "A campos vazios !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                     chamaOpcaoCrud();
                 }
                 break;
@@ -193,13 +193,13 @@ public class AppMain {
                     usuario = selecaoDeUsuario();
                     usuario = editaUsuario(usuario);
                     if (usuario != null) {
-                        JOptionPane.showMessageDialog(null, "Usuário alterado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Usuário alterado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "A campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                         chamaCadastroUsuario();
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não temos usuários cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há usuários cadastrados!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroUsuario();
                 }
                 break;
@@ -208,9 +208,9 @@ public class AppMain {
                     usuario = selecaoDeUsuario();
                     getUsuarioDAO().remover(usuario);
                     usuario = null;
-                    JOptionPane.showMessageDialog(null, "Usuário excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Usuário excluido com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não a nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há cadastros para excluir!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroUsuario();
                 }
                 break;
@@ -244,15 +244,15 @@ public class AppMain {
         Object[] selectionValues = getUsuarioDAO().findUsuariosInArray();
         String initialSelection = (String) selectionValues[0];
         Object selection = JOptionPane.showInputDialog(null, "Selecione o usuário: ",
-                "Seleção de usuario", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+                "SELEÇÃO DE USUÁRIO", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         return selection;
     }
 
     private static Usuario selecaoDeUsuario() {
         Object[] selectionValues = getUsuarioDAO().findUsuariosInArray();
         String initialSelection = (String) selectionValues[0];
-        Object selection = JOptionPane.showInputDialog(null, "Selecione o usuário?",
-                "Usuário", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+        Object selection = JOptionPane.showInputDialog(null, "Selecione o usuário: ",
+                "USUÁRIOS", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         List<Usuario> usuarios = getUsuarioDAO().buscarPorNome((String) selection);
         return usuarios.get(0);
     }
@@ -284,9 +284,9 @@ public class AppMain {
             case 0: //Inserção
                 setor = cadastroSetor();
                 if (setor != null) {
-                    JOptionPane.showMessageDialog(null, "Setor cadastrado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Setor cadastrado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "A campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                     chamaOpcaoCrud();
                 }
                 break;
@@ -295,13 +295,13 @@ public class AppMain {
                     setor = selecaoDeSetor();
                     setor = editaSetor(setor);
                     if (setor != null) {
-                        JOptionPane.showMessageDialog(null, "Setor alterado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Setor alterado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "A campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                         chamaCadastroSetor();
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não a setores cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há setores cadastrados", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroSetor();
                 }
                 break;
@@ -310,9 +310,9 @@ public class AppMain {
                     setor = selecaoDeSetor();
                     getSetorDAO().remover(setor);
                     setor = null;
-                    JOptionPane.showMessageDialog(null, "Setor excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Setor excluído com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não a nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há cadastros para excluir!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroSetor();
                 }
                 break;
@@ -342,21 +342,21 @@ public class AppMain {
         Object[] selectionValues = getSetorDAO().findSetoresInArray();
         String initialSelection = (String) selectionValues[0];
         Object selection = JOptionPane.showInputDialog(null, "Selecione o setor: ",
-                "Cadastro de usuario", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+                "SELEÇÃO DE SETOR", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         return selection;
     }
 
     private static Setor selecaoDeSetor() {
         Object[] selectionValues = getSetorDAO().findSetoresInArray();
         String initialSelection = (String) selectionValues[0];
-        Object selection = JOptionPane.showInputDialog(null, "Selecione o setor?",
-                "Setores", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+        Object selection = JOptionPane.showInputDialog(null, "Selecione o setor: ",
+                "SETORES", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         List<Setor> setores = getSetorDAO().buscarPorNome((String) selection);
         return setores.get(0);
     }
 
     private static Setor editaSetor(Setor setorEdit) throws SQLException, ClassNotFoundException {
-        String set = JOptionPane.showInputDialog(null, "Digite o nome do usuário: ", setorEdit.getNome());
+        String set = JOptionPane.showInputDialog(null, "Digite o nome do setor: ", setorEdit.getNome());
         try {
             if (set.length() > 0) {
                 Setor setor = new Setor();
@@ -378,9 +378,9 @@ public class AppMain {
             case 0: //Inserção
                 comunicado = cadastroComunicado();
                 if (comunicado != null) {
-                    JOptionPane.showMessageDialog(null, "Comunicado cadastrado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Comunicado cadastrado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "A campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                     chamaOpcaoCrud();
                 }
                 break;
@@ -389,14 +389,14 @@ public class AppMain {
                     comunicado = selecaoDeComunicado();
                     comunicado = editaComunicado(comunicado);
                     if (comunicado != null) {
-                        JOptionPane.showMessageDialog(null, "comunicado alterado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Comunicado alterado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                         chamaCadastroComunicado();
                     } else {
-                        JOptionPane.showMessageDialog(null, "A campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                         chamaCadastroComunicado();
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não a comunicado cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há comunicados cadastrados!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroComunicado();
                 }
                 break;
@@ -405,9 +405,9 @@ public class AppMain {
                     comunicado = selecaoDeComunicado();
                     getComunicadoDAO().remover(comunicado);
                     comunicado = null;
-                    JOptionPane.showMessageDialog(null, "Comunicado excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Comunicado excluído com sucesso!!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não a nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há cadastros para excluir", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCadastroComunicado();
                 }
                 break;
@@ -422,7 +422,7 @@ public class AppMain {
         String data = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ");
         String setor = (String) chamaSelecaoSetor();
         String resp = (String) chamaSelecaoUsuario();
-        String titulo = JOptionPane.showInputDialog(null, "Digite o titulo: ");
+        String titulo = JOptionPane.showInputDialog(null, "Digite o título: ");
         String desc = JOptionPane.showInputDialog(null, "Digite a descrição: ");
         Integer curtida = 0;
         String TNU = String.valueOf(chamaSelecaoTipoNU());
@@ -453,15 +453,15 @@ public class AppMain {
         Object[] selectionValues = getComunicadoDAO().findComunicadoInArray();
         String initialSelection = (String) selectionValues[0];
         Object selection = JOptionPane.showInputDialog(null, "Selecione o comunicado: ",
-                "Seleção de comunicado", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+                "SELEÇÃO DE COMUNICADO", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         return selection;
     }
 
     private static Comunicado selecaoDeComunicado() {
         Object[] selectionValues = getComunicadoDAO().findComunicadoInArray();
         String initialSelection = (String) selectionValues[0];
-        Object selection = JOptionPane.showInputDialog(null, "Selecione o comunicado:",
-                "Seleção de comunicado", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+        Object selection = JOptionPane.showInputDialog(null, "Selecione o comunicado: ",
+                "COMUNICADOS", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
         List<Comunicado> comunicados = getComunicadoDAO().buscarPorNome((String) selection);
         return comunicados.get(0);
     }
@@ -471,7 +471,7 @@ public class AppMain {
         String data = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ", comunicadoEdit.getDataCadastro());
         String setor = (String) chamaSelecaoSetor();
         String resp = (String) chamaSelecaoUsuario();
-        String titulo = JOptionPane.showInputDialog(null, "Digite o titulo: ", comunicadoEdit.getTitulo());
+        String titulo = JOptionPane.showInputDialog(null, "Digite o título: ", comunicadoEdit.getTitulo());
         String desc = JOptionPane.showInputDialog(null, "Digite a descrição: ", comunicadoEdit.getDescricao());
         Integer curtida = comunicadoEdit.getQtdCurtidas();
         String TNU = String.valueOf(chamaSelecaoTipoNU());
@@ -501,9 +501,9 @@ public class AppMain {
     private static TipoComunicado chamaSelecaoTipoComunicado() {
         String codigo = JOptionPane.showInputDialog(
                 null,
-                "Tipo Comunicado: \n 1.  NOTÍCIA \n 2.  COMEMORATIVO \n 3.  AVISOS \n " +
-                        "4.  ENTRETERIMENTO",
-                "Comunicado",
+                "Tipo Comunicado: \n \n 1.  Notícia \n 2.  Comemorativo \n 3.  Avisos \n " +
+                        "4.  Entretenimento",
+                "COMUNICADO",
                 JOptionPane.QUESTION_MESSAGE);
 
         if (codigo.equals("1")) {
@@ -515,7 +515,7 @@ public class AppMain {
         } else if (codigo.equals("4")) {
             return TipoComunicado.ENTRETERIMENTO;
         } else {
-            JOptionPane.showMessageDialog(null, "Código do comunicado inválido!!", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Código do comunicado inválido!", "ERRO", JOptionPane.ERROR_MESSAGE);
             chamaSelecaoTipoComunicado();
         }
         return null;
@@ -524,8 +524,8 @@ public class AppMain {
     private static TipoNoticiaUrgencia chamaSelecaoTipoNU() {
         String codigo = JOptionPane.showInputDialog(
                 null,
-                "Tipo Comunicado: \n 1.BAIXA \n 2.MEDIA \n 3.ALTA ",
-                "Comunicado",
+                "Tipo Comunicado: \n\n 1.Baixa \n 2.Média \n 3.Alta ",
+                "COMUNICADO",
                 JOptionPane.QUESTION_MESSAGE);
 
         if (codigo.equals("1")) {
@@ -535,7 +535,7 @@ public class AppMain {
         } else if (codigo.equals("3")) {
             return TipoNoticiaUrgencia.ALTA;
         } else {
-            JOptionPane.showMessageDialog(null, "tipo de urgência inválido!!", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Tipo de urgência inválido!!", "ERRO", JOptionPane.ERROR_MESSAGE);
             chamaSelecaoTipoNU();
         }
         return null;
@@ -549,39 +549,39 @@ public class AppMain {
             case 0: //Inserção
                 comentario = cadastroComentario(comunicado);
                 if (comentario != null) {
-                    JOptionPane.showMessageDialog(null, "Comentário feito com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Comentário cadastrado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "A campos vazios !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "ERRO! Tente Novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                     chamaOpcaoCrud();
                 }
                 break;
             case 1: //Alteração
                 try {
-                    long coment = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número do comentário : "));
+                    long coment = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número do comentário: "));
                     comentario = buscaPorIdED(coment);
                     comentario = editaComment(comentario);
                     if (comentario != null) {
                         getCommentDAO().salvar(comentario);
-                        JOptionPane.showMessageDialog(null, "Comentário alterado com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Comentário alterado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "A campo vazio !!!!", "Aviso", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "ERRO! Tente Novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                         chamaCastroComentario(comunicado);
                     }
 
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não a comentários cadastrados", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há comentários cadastrados", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCastroComentario(comunicado);
                 }
                 break;
             case 2: //Exclusão
                 try {
-                    long coment = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número do comentário : "));
+                    long coment = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número do comentário: "));
                     comentario = buscaPorIdED(coment);
                     getCommentDAO().remover(comentario);
                     comentario = null;
-                    JOptionPane.showMessageDialog(null, "Comentário excluido com sucesso!!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Comentário excluído com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não a nada para excluir", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Não há cadastros para excluir!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                     chamaCastroComentario(comunicado);
                 }
                 break;

@@ -18,9 +18,9 @@ public class AppMainCadastro {
             List<Comentario> comments = ComentarioDAO.buscaPorId(comunicado.getId());
             String texto = "";
             for (Comentario comment : comments) {
-                texto += "\n ###################################################################";
-                texto += "\n \n     " + comment.getUsuario().getUsuario();
-                texto += "\n        " + comment.getId() + ": " + comment.getComentario() + "\n";
+                texto += "\n" + comment.getUsuario().getUsuario();
+                texto += "\n" + comment.getId() + " - " + comment.getComentario() + "\n";
+                texto += "-------------------------------------------------------------";
             }
 
             String[] opcoes;
@@ -30,7 +30,7 @@ public class AppMainCadastro {
             int resposta = JOptionPane.showOptionDialog(
                     null
                     , texto
-                    , ""
+                    , "COMENTÁRIOS - " + comunicado.getTitulo()
                     , JOptionPane.YES_NO_OPTION
                     , JOptionPane.PLAIN_MESSAGE
                     , null
@@ -56,15 +56,16 @@ public class AppMainCadastro {
     public static void vizulizarComunicado(Comunicado comunicado) throws SQLException, ClassNotFoundException {
         try {
             String texto = "";
-            texto = "############################ " + comunicado.getTitulo() + " ############################" +
-                    "\n Por:" + comunicado.getResponsavel().getUsuario() +
+            texto = "---------------------------- " + comunicado.getTitulo() + " ----------------------------" +
+                    "\n " +
+                    "\n Por: " + comunicado.getResponsavel().getUsuario() +
                     "\n Setor: " + comunicado.getSetor().getNome() +
                     "\n Tema: " + comunicado.getTipoComunicado() +
                     "\n Data: " + comunicado.getDataCadastro() +
-                    "\n \n \n Urgencia/Prioridade: " + comunicado.getTipoUrgencia() +
+                    "\n \n Urgência/Prioridade: " + comunicado.getTipoUrgencia() +
                     "\n Comunicado : " + comunicado.getDescricao() +
                     "\n \n \n \n Curtidas: " + comunicado.getQtdCurtidas() +
-                    "\n #####################################################################################";
+                    "\n";
 
             String[] opcoes;
             opcoes = new String[]{"Curtir", "Ver comentários", "Voltar"};
