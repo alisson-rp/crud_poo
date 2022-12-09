@@ -44,8 +44,8 @@ public class AppMainCadastro {
         String texto = "";
         for (Comentario comment : comments) {
             texto += "\n #####################################################";
-            texto += "\n \n" + comment.getUsuario().getUsuario();
-            texto += "\n" + comment.getId() + ": " + comment.getComentario() + "\n";
+            texto += "\n \n     " + comment.getUsuario().getUsuario();
+            texto += "\n        " + comment.getId() + ": " + comment.getComentario() + "\n";
         }
 
         String[] opcoes;
@@ -66,6 +66,7 @@ public class AppMainCadastro {
         switch (resposta) {
             case 0:
                 AppMain.chamaCastroComentario(comunicado);
+                AppMain.ChamarMenuPrincipal();
                 break;
             case 2:
                 AppMain.ChamarMenuPrincipal();

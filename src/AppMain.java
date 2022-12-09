@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static repository.ComentarioDAO.buscaPorIdED;
+
 public class AppMain {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ChamarMenuPrincipal();
@@ -211,67 +213,6 @@ public class AppMain {
                 break;
         }
         return usuario;
-    }
-
-    public static Comentario chamaCastroComentario(Comunicado comunicado) throws SQLException, ClassNotFoundException {
-        Integer opcaoCrud = chamaOpcaoCrud();
-        Comentario comentario = null;
-
-        switch (opcaoCrud) {
-            case 0: //Inserção
-                comentario = cadastroComentario(comunicado);
-                if (comentario != null) {
-                    JOptionPane.showMessageDialog(null,"Comentario feito com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null,"A campos vazios !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
-                    chamaOpcaoCrud();
-                }
-                break;
-            case 1: //Alteração
-                try {
-////                    usuario = selecaoDeUsuario();
-////                    usuario = editaUsuario(usuario);
-//                    if (comentario != null) {
-//                        JOptionPane.showMessageDialog(null,"Usuario alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
-//                    } else {
-//                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
-//                        chamaCadastroUsuario();
-//                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null,"Não temos usuarios cadastrados","Aviso", JOptionPane.INFORMATION_MESSAGE);
-                    chamaCadastroUsuario();
-                }
-                break;
-            case 2: //Exclusão
-                try {
-//                    comentario = selecaoDeUsuario();
-//                    getUsuarioDAO().remover(usuario);
-//                    comentario = null;
-                    JOptionPane.showMessageDialog(null,"Usuario excluido com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null,"Não Há nada para excluir","Aviso", JOptionPane.INFORMATION_MESSAGE);
-                    //chamaCadastroUsuario();
-                }
-                break;
-            default:
-                ChamarMenuPrincipal();
-                break;
-        }
-        return comentario;
-    }
-
-    private static Comentario cadastroComentario(Comunicado comunicado) {
-        String comentarioString = JOptionPane.showInputDialog(null, "Digite o comentario: ");
-
-        if(comentarioString.length() > 0){
-            Comentario comentario1 = new Comentario();
-            comentario1.setComunicado(comunicado);
-            comentario1.setUsuario(selecaoDeUsuario());
-            comentario1.setComentario(comentarioString);
-            comentario1.setDataComentario(LocalDate.now());
-            return comentario1;
-        }
-        return null;
     }
 
     private static Usuario cadastroUsuario() {
@@ -562,6 +503,84 @@ public class AppMain {
         } else {
             JOptionPane.showMessageDialog(null,"tipo de Urgencia inválido!!","Erro", JOptionPane.ERROR_MESSAGE);
             chamaSelecaoTipoNU();
+        }
+        return null;
+    }
+
+    public static Comentario chamaCastroComentario(Comunicado comunicado) throws SQLException, ClassNotFoundException {
+        Integer opcaoCrud = chamaOpcaoCrud();
+        Comentario comentario = null;
+
+        switch (opcaoCrud) {
+            case 0: //Inserção
+                comentario = cadastroComentario(comunicado);
+                if (comentario != null) {
+                    JOptionPane.showMessageDialog(null,"Comentario feito com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,"A campos vazios !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
+                    chamaOpcaoCrud();
+                }
+                break;
+            case 1: //Alteração
+                try {
+                   long coment = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o numero do comentario : "));
+                    comentario = buscaPorIdED(coment);
+                    comentario = editaComment(comentario);
+                    if (comentario != null) {
+                        getCommentDAO().salvar(comentario);
+                        JOptionPane.showMessageDialog(null,"comentario alterado com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Campo vazio !!!!","Aviso", JOptionPane.ERROR_MESSAGE);
+                        chamaCastroComentario(comunicado);
+                    }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Não temos comentarios cadastrados","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    chamaCastroComentario(comunicado);
+                }
+                break;
+            case 2: //Exclusão
+                try {
+                    long coment = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o numero do comentario : "));
+                   comentario = buscaPorIdED(coment);
+                    getCommentDAO().remover(comentario);
+                    comentario = null;
+                    JOptionPane.showMessageDialog(null,"Comentario excluido com sucesso!!","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,"Não Há nada para excluir","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    chamaCastroComentario(comunicado);
+                }
+                break;
+            default:
+                ChamarMenuPrincipal();
+                break;
+        }
+        return comentario;
+    }
+
+    private static Comentario cadastroComentario(Comunicado comunicado) {
+        String comentarioString = JOptionPane.showInputDialog(null, "Digite o comentario: ");
+
+        if(comentarioString.length() > 0){
+            Comentario comentario1 = new Comentario();
+            comentario1.setComunicado(comunicado);
+            comentario1.setUsuario(selecaoDeUsuario());
+            comentario1.setComentario(comentarioString);
+            comentario1.setDataComentario(LocalDate.now());
+            return comentario1;
+        }
+        return null;
+    }
+
+    private static Comentario editaComment(Comentario comentarioEdit) {
+        String comentarioString = JOptionPane.showInputDialog(null, "Digite o comentario: ",comentarioEdit.getComentario());
+
+        if(comentarioString.length() > 0){
+            Comentario comentario1 = new Comentario();
+            comentario1.setComentario(comentarioString);
+            comentario1.setId(comentarioEdit.getId());
+
+            return comentario1;
         }
         return null;
     }

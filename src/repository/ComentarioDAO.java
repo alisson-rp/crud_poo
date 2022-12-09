@@ -111,12 +111,29 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
         return comments;
     }
 
+    public static Comentario buscaPorIdED(Long id) throws SQLException, ClassNotFoundException {
+        List<Comentario> comments = new ArrayList<>();
+        Connection connection = getConnection();
+        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE item = ?");
+        stmt.setLong(1, id);
+        ResultSet resultSet = stmt.executeQuery();
+
+        while (resultSet.next()) {
+            Comentario comentario = new Comentario();
+            comentario.setId(resultSet.getLong(1));
+            comentario.setComentario(resultSet.getString(3));
+
+            comments.add(comentario);
+        }
+        connection.close();
+        return comments.get(0);
+    }
+
     public void update(Comentario comentario) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("UPDATE setores SET comentarios = ?, dt_comentario ? WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("UPDATE comentarios SET comentario = ? WHERE item = ?");
         stmt.setString(1, comentario.getComentario());
-        //stmt.setDate(5, comentario.getDataComentario());
-        stmt.setInt(3, comentario.getId().intValue());
+        stmt.setInt(2, comentario.getId().intValue());
 
         int i = stmt.executeUpdate();
         System.out.println(i + "linhas atualizadas");
@@ -125,7 +142,7 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
 
     public void delete(Comentario comment) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE from comentarios WHERE id = ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE from comentarios WHERE item = ?");
         stmt.setInt(1, comment.getId().intValue());
         stmt.executeUpdate();
         connection.close();
