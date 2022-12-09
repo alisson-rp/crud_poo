@@ -1,12 +1,13 @@
 package modal;
 
-public class Usuario extends Entity{
+public class Usuario extends Entity {
 
     private String usuario;
     private String email;
     private Setor setor;
 
-    public Usuario() {}
+    public Usuario() {
+    }
 
     public String getUsuario() {
         return usuario;

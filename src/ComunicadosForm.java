@@ -15,7 +15,7 @@ public class ComunicadosForm extends JPanel {
     public static final long serialVersionUID = 1L;
 
     public static final String[] nomeColunas =
-            {"Codigo", "Titulo", "Data", "Setor", "Urgencia", "Tipo", "Responsavel", "Curtidas", ""};
+            {"Código", "Título", "Data", "Setor", "Urgência", "Tipo", "Responsável", "Curtidas", ""};
 
     protected JTable table;
     protected JScrollPane scroller;

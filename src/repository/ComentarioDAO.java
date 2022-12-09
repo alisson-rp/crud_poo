@@ -84,7 +84,6 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
             commnet.setComentario(resultSet.getString(2));
             Usuario usuario = UsuarioDAO.buscaPorId(resultSet.getLong(3));
             commnet.setUsuario(usuario);
-            //commnet.setDataComentario(resultSet.getDate(3));
             comments.add(commnet);
         }
         connection.close();
@@ -94,7 +93,7 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
     public static List<Comentario> buscaPorId(Long id) throws SQLException, ClassNotFoundException {
         List<Comentario> comments = new ArrayList<>();
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE cd_comunicado = ?");
+        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE cd_comunicado  = ?");
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
 

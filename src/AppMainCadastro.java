@@ -9,117 +9,100 @@ import repository.UsuarioDAO;
 
 import javax.swing.*;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class AppMainCadastro {
 
-
-    public static Setor cadastrarSetor() {
-        Setor novoSetor = new Setor();
-        novoSetor.setNome(JOptionPane.showInputDialog(null, "Nome: ", "Cadastro de Setor", JOptionPane.QUESTION_MESSAGE));
-
-        return novoSetor;
-    }
-
-    public static Comunicado cadastrarComunicado() {
-        Comunicado novoComunicado = new Comunicado();
-        novoComunicado.setDataCadastro(LocalDate.now());
-
-        Setor setor = new Setor();
-        novoComunicado.setSetor(setor);
-
-        Usuario reponsavel = new Usuario();
-        novoComunicado.setResponsavel(reponsavel);
-
-        novoComunicado.setTitulo(JOptionPane.showInputDialog(null, "Titulo: ", "Cadastro de Setor", JOptionPane.QUESTION_MESSAGE));
-        novoComunicado.setDescricao(JOptionPane.showInputDialog(null, "Descrição: ", "Cadastro de Comunicado", JOptionPane.QUESTION_MESSAGE));
-        //novoComunicado.setTipoUrgencia();//Fazer selects
-        //novoComunicado.setTipoComunicado();//Fazer selects
-        return novoComunicado;
-    }
-
     public static void vizualizarComentarios(Comunicado comunicado) throws SQLException, ClassNotFoundException {
-        List<Comentario> comments = ComentarioDAO.buscaPorId(comunicado.getId());
-        String texto = "";
-        for (Comentario comment : comments) {
-            texto += "\n #####################################################";
-            texto += "\n \n     " + comment.getUsuario().getUsuario();
-            texto += "\n        " + comment.getId() + ": " + comment.getComentario() + "\n";
-        }
+        try {
+            List<Comentario> comments = ComentarioDAO.buscaPorId(comunicado.getId());
+            String texto = "";
+            for (Comentario comment : comments) {
+                texto += "\n ###################################################################";
+                texto += "\n \n     " + comment.getUsuario().getUsuario();
+                texto += "\n        " + comment.getId() + ": " + comment.getComentario() + "\n";
+            }
 
-        String[] opcoes;
-        opcoes = new String[]{"Operações", "Voltar"};
+            String[] opcoes;
+            opcoes = new String[]{"Operações", "Voltar"};
 
 
-        int resposta = JOptionPane.showOptionDialog(
-                null
-                , texto
-                , ""
-                , JOptionPane.YES_NO_OPTION
-                , JOptionPane.PLAIN_MESSAGE
-                , null
-                , opcoes
-                , "Botao 3"
-        );
+            int resposta = JOptionPane.showOptionDialog(
+                    null
+                    , texto
+                    , ""
+                    , JOptionPane.YES_NO_OPTION
+                    , JOptionPane.PLAIN_MESSAGE
+                    , null
+                    , opcoes
+                    , "Botao 3"
+            );
 
-        switch (resposta) {
-            case 0:
-                AppMain.chamaCastroComentario(comunicado);
-                AppMain.ChamarMenuPrincipal();
-                break;
-            case 2:
-                AppMain.ChamarMenuPrincipal();
-                break;
+            switch (resposta) {
+                case 0:
+                    AppMain.chamaCastroComentario(comunicado);
+                    AppMain.ChamarMenuPrincipal();
+                    break;
+                case 2:
+                    AppMain.ChamarMenuPrincipal();
+                    break;
+            }
+        } catch (Exception e) {
+            AppMain.chamaCastroComentario(comunicado);
         }
     }
 
     public static void vizulizarComunicado(Comunicado comunicado) throws SQLException, ClassNotFoundException {
-        String texto = "";
-        texto = "############################ " + comunicado.getTitulo() + " ############################" +
-                "\n Por:" + comunicado.getResponsavel().getUsuario() +
-                "\n Setor: " + comunicado.getSetor().getNome() +
-                "\n Tema: " + comunicado.getTipoComunicado() +
-                "\n Data: " + comunicado.getDataCadastro() +
-                "\n \n \n Urgencia/Prioridade: " + comunicado.getTipoUrgencia() +
-                "\n Comunicado : " + comunicado.getDescricao() +
-                "\n \n \n \n Curtidas: " + comunicado.getQtdCurtidas() +
-                "\n #####################################################################################";
+        try {
+            String texto = "";
+            texto = "############################ " + comunicado.getTitulo() + " ############################" +
+                    "\n Por:" + comunicado.getResponsavel().getUsuario() +
+                    "\n Setor: " + comunicado.getSetor().getNome() +
+                    "\n Tema: " + comunicado.getTipoComunicado() +
+                    "\n Data: " + comunicado.getDataCadastro() +
+                    "\n \n \n Urgencia/Prioridade: " + comunicado.getTipoUrgencia() +
+                    "\n Comunicado : " + comunicado.getDescricao() +
+                    "\n \n \n \n Curtidas: " + comunicado.getQtdCurtidas() +
+                    "\n #####################################################################################";
 
-        String[] opcoes;
-        opcoes = new String[]{"Comentar", "Curtir", "Ver comentarios", "Voltar"};
+            String[] opcoes;
+            opcoes = new String[]{"Comentar", "Curtir", "Ver comentários", "Voltar"};
 
-        int resposta = JOptionPane.showOptionDialog(
-                null
-                , texto
-                , comunicado.getTitulo()  // Titulo
-                , JOptionPane.YES_NO_OPTION
-                , JOptionPane.PLAIN_MESSAGE
-                , null
-                , opcoes
-                , "Botao 3"
-        );
+            int resposta = JOptionPane.showOptionDialog(
+                    null
+                    , texto
+                    , comunicado.getTitulo()  // Titulo
+                    , JOptionPane.YES_NO_OPTION
+                    , JOptionPane.PLAIN_MESSAGE
+                    , null
+                    , opcoes
+                    , "Botao 3"
+            );
 
-        switch (resposta) {
-            case 0:
-                Comentario comment = AppMain.chamaCastroComentario(comunicado);
-                if (comment != null) AppMain.getCommentDAO().salvar(comment);
-                vizulizarComunicado(comunicado);
-                break;
-            case 1:
-                ComunicadoDAO.curtiComentario(comunicado.getId());
-                comunicado.setQtdCurtidas(comunicado.getQtdCurtidas()+1);
-                vizulizarComunicado(comunicado);
-                break;
-            case 2:
-                vizualizarComentarios(comunicado);
-                //chamaRelatorioComentario(comunicado.getId());
-                break;
-            case 3:
-                AppMain.ChamarMenuPrincipal();
-                break;
+            switch (resposta) {
+                case 0:
+                    Comentario comment = AppMain.chamaCastroComentario(comunicado);
+                    if (comment != null) AppMain.getCommentDAO().salvar(comment);
+                    vizulizarComunicado(comunicado);
+                    break;
+                case 1:
+                    ComunicadoDAO.curtiComentario(comunicado.getId());
+                    comunicado.setQtdCurtidas(comunicado.getQtdCurtidas() + 1);
+                    vizulizarComunicado(comunicado);
+                    break;
+                case 2:
+                    vizualizarComentarios(comunicado);
+                    vizulizarComunicado(comunicado);
+                    break;
+                case 3:
+                    AppMain.ChamarMenuPrincipal();
+                    break;
+            }
+        } catch (Exception e) {
+            AppMain.chamaMenuComunicado();
         }
     }
+
 
     static void chamaRelatorioComentario(Long id) throws SQLException, ClassNotFoundException {
         List<Comentario> comments = ComentarioDAO.buscaPorId(id);
