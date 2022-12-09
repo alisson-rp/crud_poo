@@ -40,11 +40,12 @@ public class AppMainCadastro {
 
             switch (resposta) {
                 case 0:
-                    AppMain.chamaCastroComentario(comunicado);
-                    AppMain.ChamarMenuPrincipal();
+                    Comentario comment = AppMain.chamaCastroComentario(comunicado);
+                    if (comment != null) AppMain.getCommentDAO().salvar(comment);
+                    vizualizarComentarios(comunicado);
                     break;
                 case 2:
-                    AppMain.ChamarMenuPrincipal();
+                    vizualizarComentarios(comunicado);
                     break;
             }
         } catch (Exception e) {
@@ -66,7 +67,7 @@ public class AppMainCadastro {
                     "\n #####################################################################################";
 
             String[] opcoes;
-            opcoes = new String[]{"Comentar", "Curtir", "Ver comentários", "Voltar"};
+            opcoes = new String[]{"Curtir", "Ver comentários", "Voltar"};
 
             int resposta = JOptionPane.showOptionDialog(
                     null
@@ -81,20 +82,15 @@ public class AppMainCadastro {
 
             switch (resposta) {
                 case 0:
-                    Comentario comment = AppMain.chamaCastroComentario(comunicado);
-                    if (comment != null) AppMain.getCommentDAO().salvar(comment);
-                    vizulizarComunicado(comunicado);
-                    break;
-                case 1:
                     ComunicadoDAO.curtiComentario(comunicado.getId());
                     comunicado.setQtdCurtidas(comunicado.getQtdCurtidas() + 1);
                     vizulizarComunicado(comunicado);
                     break;
-                case 2:
+                case 1:
                     vizualizarComentarios(comunicado);
                     vizulizarComunicado(comunicado);
                     break;
-                case 3:
+                case 2:
                     AppMain.ChamarMenuPrincipal();
                     break;
             }
