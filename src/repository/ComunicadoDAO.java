@@ -83,7 +83,7 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
         List<Comunicado> comunicados = new ArrayList<>();
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM comunicados");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM comunicados order by dt_cadastro desc");
         ResultSet resultSet = stmt.executeQuery();
 
         while (resultSet.next()) {
