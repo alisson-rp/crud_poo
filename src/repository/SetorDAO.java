@@ -61,7 +61,7 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
     public void insere(Setor setor) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("insert into setores (nm_setor) value(?)");
+        PreparedStatement stmt = connection.prepareStatement("insert into setores (nm_setor) values (?)");
         stmt.setString(1, setor.getNome());
 
         int i = stmt.executeUpdate();

@@ -1,0 +1,76 @@
+-- Schema: comunicados_db
+
+DROP SCHEMA IF EXISTS comunicados_db CASCADE;
+CREATE SCHEMA IF NOT EXISTS comunicados_db;
+
+SET search_path = comunicados_db;
+
+-- Table: setores
+
+DROP TABLE IF EXISTS setores CASCADE;
+CREATE TABLE IF NOT EXISTS setores (
+  cd_setor serial PRIMARY KEY,
+  nm_setor VARCHAR(100) NULL
+);
+
+-- Table: usuarios
+
+DROP TABLE IF EXISTS usuarios CASCADE;
+CREATE TABLE IF NOT EXISTS usuarios (
+  cd_usuario INT NOT NULL,
+  lg_usuario VARCHAR(100) NOT NULL,
+  email VARCHAR(300) NULL,
+  cd_setor INT NOT NULL,
+  PRIMARY KEY (cd_usuario),
+  CONSTRAINT cd_setor
+    FOREIGN KEY (cd_setor)
+    REFERENCES setores(cd_setor)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- Table: comunicados
+
+DROP TABLE IF EXISTS comunicados CASCADE;
+CREATE TABLE IF NOT EXISTS comunicados (
+  cd_comunicado serial PRIMARY KEY,
+  dt_cadastro DATE NOT NULL,
+  cd_setor INT NOT NULL,
+  cd_tipoUrgencia INT NOT NULL,
+  cd_tipoComunicado INT NOT NULL,
+  cd_responsavel INT NOT NULL,
+  titulo VARCHAR(100) NULL,
+  descricao VARCHAR(300) NULL,
+  curtidas INT NULL,
+  CONSTRAINT cd_setor
+    FOREIGN KEY (cd_setor)
+    REFERENCES setores(cd_setor)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT cd_usuario
+    FOREIGN KEY (cd_responsavel)
+    REFERENCES usuarios(cd_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- Table: comentarios
+
+DROP TABLE IF EXISTS comentarios CASCADE;
+CREATE TABLE IF NOT EXISTS comentarios (
+  item serial PRIMARY KEY,
+  cd_comunicado INT NOT NULL,
+  comentario VARCHAR(500) NULL,
+  cd_usuario INT NULL,
+  dt_comentario DATE NULL,
+  CONSTRAINT cd_usuario
+    FOREIGN KEY (cd_usuario)
+    REFERENCES usuarios(cd_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT cd_comunicado
+    FOREIGN KEY (cd_comunicado)
+    REFERENCES comunicados(cd_comunicado)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);

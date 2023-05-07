@@ -379,9 +379,10 @@ public class AppMain {
                 comunicado = cadastroComunicado();
                 if (comunicado != null) {
                     JOptionPane.showMessageDialog(null, "Comunicado cadastrado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                    chamaCadastroComunicado();
                 } else {
                     JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
-                    chamaOpcaoCrud();
+                    chamaCadastroComunicado();
                 }
                 break;
             case 1: //Alteração
@@ -419,7 +420,7 @@ public class AppMain {
     }
 
     private static Comunicado cadastroComunicado() throws SQLException, ClassNotFoundException {
-        String data = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ");
+        String datacrua = JOptionPane.showInputDialog(null, "Digite a data do cadastro: ");
         String setor = (String) chamaSelecaoSetor();
         String resp = (String) chamaSelecaoUsuario();
         String titulo = JOptionPane.showInputDialog(null, "Digite o título: ");
@@ -429,10 +430,10 @@ public class AppMain {
         String TComunicado = String.valueOf(chamaSelecaoTipoComunicado());
 
         try {
-            if (data.length() > 0 && titulo.length() > 0) {
+            if (datacrua.length() > 0 && titulo.length() > 0) {
                 Comunicado comunicado = new Comunicado();
-                DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                comunicado.setDataCadastro(LocalDate.parse(data, formatadorBarra));
+                java.sql.Date data = java.sql.Date.valueOf(datacrua);
+                comunicado.setDataCadastro(data.toLocalDate());
                 comunicado.setSetor(getSetorDAO().findSetorByNome(setor));
                 comunicado.setResponsavel(getUsuarioDAO().findUsuarioByNome(resp));
                 comunicado.setTitulo(titulo);

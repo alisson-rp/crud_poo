@@ -61,7 +61,7 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
         Connection connection = getConnection();
 
         PreparedStatement stmt = connection.prepareStatement("insert into comentarios (cd_comunicado, comentario, cd_usuario, dt_comentario)" +
-                "value(?,?,?,?)");
+                "values (?,?,?,?)");
         stmt.setInt(1, comentario.getComunicado().getId().intValue());
         stmt.setString(2, comentario.getComentario());
         stmt.setInt(3, comentario.getUsuario().getId().intValue());

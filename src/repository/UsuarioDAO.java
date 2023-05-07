@@ -62,7 +62,7 @@ public class UsuarioDAO extends Conexao implements IGenericDAO<Usuario> {
     public void insere(Usuario usuario) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
-        PreparedStatement stmt = connection.prepareStatement("insert into usuarios (lg_usuario,email,cd_setor) value(?,?,?)");
+        PreparedStatement stmt = connection.prepareStatement("insert into usuarios (lg_usuario,email,cd_setor) values (?,?,?)");
         stmt.setString(1, usuario.getUsuario());
         stmt.setString(2, usuario.getEmail());
         stmt.setInt(3, usuario.getSetor().getId().intValue());

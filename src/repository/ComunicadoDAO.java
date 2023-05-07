@@ -64,7 +64,7 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
         Connection connection = getConnection();
 
         PreparedStatement stmt = connection.prepareStatement("insert into comunicados (dt_cadastro,cd_setor,cd_tipoUrgencia,cd_tipoComunicado," +
-                "cd_responsavel,titulo,descricao,curtidas) value(?,?,?,?,?,?,?,?)");
+                "cd_responsavel,titulo,descricao,curtidas) values (?,?,?,?,?,?,?,?)");
         stmt.setString(1, comunicado.getDataCadastro().toString());
         stmt.setInt(2, comunicado.getSetor().getId().intValue());
         stmt.setInt(3, comunicado.getTipoUrgencia().ordinal());
