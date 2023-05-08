@@ -45,6 +45,7 @@ public class SetorDAO extends Conexao implements IGenericDAO<Setor> {
             throw new RuntimeException(e);
         }
         return setores;
+
     }
 
     @Override
