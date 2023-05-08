@@ -4,10 +4,7 @@ import modal.Comunicado;
 import modal.TipoComunicado;
 import modal.TipoNoticiaUrgencia;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +62,7 @@ public class ComunicadoDAO extends Conexao implements IGenericDAO<Comunicado> {
 
         PreparedStatement stmt = connection.prepareStatement("insert into comunicados (dt_cadastro,cd_setor,cd_tipoUrgencia,cd_tipoComunicado," +
                 "cd_responsavel,titulo,descricao,curtidas) values (?,?,?,?,?,?,?,?)");
-        stmt.setString(1, comunicado.getDataCadastro().toString());
+        stmt.setDate(1, Date.valueOf(comunicado.getDataCadastro().toString()));
         stmt.setInt(2, comunicado.getSetor().getId().intValue());
         stmt.setInt(3, comunicado.getTipoUrgencia().ordinal());
         stmt.setInt(4, comunicado.getTipoComunicado().ordinal());

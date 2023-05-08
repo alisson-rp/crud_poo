@@ -379,7 +379,6 @@ public class AppMain {
                 comunicado = cadastroComunicado();
                 if (comunicado != null) {
                     JOptionPane.showMessageDialog(null, "Comunicado cadastrado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
-                    chamaCadastroComunicado();
                 } else {
                     JOptionPane.showMessageDialog(null, "ERRO! Tente novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);
                     chamaCadastroComunicado();
@@ -432,8 +431,8 @@ public class AppMain {
         try {
             if (datacrua.length() > 0 && titulo.length() > 0) {
                 Comunicado comunicado = new Comunicado();
-                java.sql.Date data = java.sql.Date.valueOf(datacrua);
-                comunicado.setDataCadastro(data.toLocalDate());
+                LocalDate data = LocalDate.parse(datacrua, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                comunicado.setDataCadastro(data);
                 comunicado.setSetor(getSetorDAO().findSetorByNome(setor));
                 comunicado.setResponsavel(getUsuarioDAO().findUsuarioByNome(resp));
                 comunicado.setTitulo(titulo);
