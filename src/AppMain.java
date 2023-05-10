@@ -549,6 +549,7 @@ public class AppMain {
             case 0: //Inserção
                 comentario = cadastroComentario(comunicado);
                 if (comentario != null) {
+                    getCommentDAO().salvar(comentario);
                     JOptionPane.showMessageDialog(null, "Comentário cadastrado com sucesso!", "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "ERRO! Tente Novamente!", "AVISO", JOptionPane.ERROR_MESSAGE);

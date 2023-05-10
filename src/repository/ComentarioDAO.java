@@ -3,10 +3,7 @@ package repository;
 import modal.Comentario;
 import modal.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +62,7 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
         stmt.setInt(1, comentario.getComunicado().getId().intValue());
         stmt.setString(2, comentario.getComentario());
         stmt.setInt(3, comentario.getUsuario().getId().intValue());
-        stmt.setString(4, comentario.getDataComentario().toString());
+        stmt.setDate(4, Date.valueOf(comentario.getDataComentario().toString()));
         int i = stmt.executeUpdate();
         System.out.println(i + " linhas inseridas");
         connection.close();
@@ -113,7 +110,7 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
     public static Comentario buscaPorIdED(Long id) throws SQLException, ClassNotFoundException {
         List<Comentario> comments = new ArrayList<>();
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE item = ?");
+        PreparedStatement stmt = connection.prepareStatement("select * from comentarios WHERE cd_comentario = ?");
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
 
@@ -130,7 +127,7 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
 
     public void update(Comentario comentario) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("UPDATE comentarios SET comentario = ? WHERE item = ?");
+        PreparedStatement stmt = connection.prepareStatement("UPDATE comentarios SET comentario = ? WHERE cd_comentario = ?");
         stmt.setString(1, comentario.getComentario());
         stmt.setInt(2, comentario.getId().intValue());
 
@@ -141,7 +138,7 @@ public class ComentarioDAO extends Conexao implements IGenericDAO<Comentario> {
 
     public void delete(Comentario comment) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE from comentarios WHERE item = ?");
+        PreparedStatement stmt = connection.prepareStatement("DELETE from comentarios WHERE cd_comentario = ?");
         stmt.setInt(1, comment.getId().intValue());
         stmt.executeUpdate();
         connection.close();
